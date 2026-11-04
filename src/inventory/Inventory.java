@@ -1,4 +1,6 @@
-package com.example;
+package inventory;
+
+import product.Product;
 
 import java.util.HashMap;
 

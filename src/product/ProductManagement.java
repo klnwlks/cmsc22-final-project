@@ -1,4 +1,6 @@
-package com.example;
+package product;
+
+import inventory.Inventory;
 
 import java.util.ArrayList;
 
