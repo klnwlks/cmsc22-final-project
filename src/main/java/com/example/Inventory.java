@@ -10,8 +10,14 @@ public class Inventory {
 		inventory = new HashMap<>();
 	}
 	
+	/// Used to add a product to inventory.
 	static public void addNewProduct(Product newProduct) {
 		inventory.put(newProduct, 0);
+	}
+	
+	/// Used to load products from save file.
+	static public void addNewProduct(Product newProduct, int stock) {
+		inventory.put(newProduct, stock);
 	}
 	
 	/// Manager can restock existing products. Error Handling for product nonexistence.
