@@ -56,12 +56,10 @@ public class System implements Serializable {
     Path target = Objects.requireNonNull(path, "path").toAbsolutePath();
     Path parent = target.getParent();
     Files.createDirectories(parent);
-    try {
-      try (ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path))) {
-        output.writeObject(this);
-      }
-    } finally {
-      Files.deleteIfExists(target);
+    try (ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path))) {
+      output.writeObject(this);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
