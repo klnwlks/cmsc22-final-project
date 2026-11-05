@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <VBox spacing="12" prefWidth="180">
+            <Label text="Cowlendar" />
+            <Label text="DTRI Farm Fresh" />
+            <Separator />
+            <Button text="Gantt calendar" disable="true" maxWidth="Infinity" />
+            <Button text="Products &amp; Inventory" maxWidth="Infinity" />
+            <Button text="Transaction logs" onAction="#showTransactions" maxWidth="Infinity" />
+            <Button text="Audit logs" disable="true" maxWidth="Infinity" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Label fx:id="userLabel" />
+            <Button text="Log out" disable="true" />
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="16">
+            <Label text="Cowlendar / Products" />
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label text="Product and Inventory Management" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="editProductButton" text="Edit product" onAction="#editProduct" />
+                <Button fx:id="addProductButton" text="Add product" onAction="#addProduct" />
+            </HBox>
+            <HBox spacing="32">
+                <VBox spacing="6"><Label text="Total products" /><Label fx:id="totalProducts" text="0" /><Label fx:id="categorySummary" text="Across 0 categories" /></VBox>
+                <VBox spacing="6"><Label text="Products in Stock" /><Label fx:id="productsInStock" text="0" /><Label text="Available for sale" /></VBox>
+                <VBox spacing="6"><Label text="Current Product in Stock" /><Label fx:id="currentInStock" text="0" /><Label fx:id="currentSummary" text="All categories" /></VBox>
+            </HBox>
+            <FlowPane hgap="6" vgap="6">
+                <TextField fx:id="searchField" promptText="Search products" />
+                <HBox fx:id="categoryFilters" spacing="6" />
+            </FlowPane>
+            <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="productColumn" text="Product" prefWidth="190" />
+                    <TableColumn fx:id="categoryColumn" text="Category" prefWidth="100" />
+                    <TableColumn fx:id="sizeColumn" text="Size / Description" prefWidth="130" />
+                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="80" />
+                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="110" />
+                    <TableColumn fx:id="deleteColumn" text="" prefWidth="80" />
+                </columns>
+                <placeholder><Label text="No products found. Add a product to get started." /></placeholder>
+            </TableView>
+            <Label fx:id="resultSummary" text="Showing 0 products" />
+        </VBox>
+    </center>
+</BorderPane>
