@@ -15,8 +15,8 @@ public class Manager extends User {
   // inventory is a reference to the inventory held by sysstem
   public Manager(String name, String password, Inventory inventory, System system) {
     super(name, password);
-    this.inventory = Objects.requireNonNull(inventory, "inventory");
-    this.system = Objects.requireNonNull(system, "system");
+    this.inventory = inventory;
+    this.system = system;
   }
 
   // call inventory methods for this, we pass this param to indicate we are a

@@ -12,7 +12,7 @@ public class Clerk extends User {
 
   public Clerk(String name, String password, Inventory inventory) {
     super(name, password);
-    this.inventory = Objects.requireNonNull(inventory, "inventory");
+    this.inventory = inventory;
   }
 
   public Transaction transaction(Product product, int quantity) {

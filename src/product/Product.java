@@ -15,14 +15,14 @@ public class Product implements Serializable {
   }
 
   public Product(String name, String description, int price, String imageString, Category category) {
-    this.name = Objects.requireNonNull(name, "name");
-    this.description = Objects.requireNonNull(description, "description");
+    this.name = name;
+    this.description = description;
     if (price < 0) {
       throw new IllegalArgumentException("price must not be negative");
     }
     this.price = price;
     this.imageString = imageString;
-    this.category = Objects.requireNonNull(category, "category");
+    this.category = category;
   }
 
   public String getName() {
@@ -46,8 +46,9 @@ public class Product implements Serializable {
   }
 
   public void setDescription(String description) {
-    this.description = Objects.requireNonNull(description, "description");
+    this.description = description;
   }
+
   public void setPrice(int price) {
     if (price < 0) {
       throw new IllegalArgumentException("price must not be negative");
@@ -60,10 +61,10 @@ public class Product implements Serializable {
   }
 
   public void setCategory(Category category) {
-    this.category = Objects.requireNonNull(category, "category");
+    this.category = category;
   }
 
   public void setName(String name) {
-    this.name = Objects.requireNonNull(name, "name");
+    this.name = name;
   }
 }

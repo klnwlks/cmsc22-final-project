@@ -16,8 +16,8 @@ public class Transaction implements Serializable {
   private final LocalDateTime date;
 
   public Transaction(User user, Product product, int amount, int quantity) {
-    this.user = Objects.requireNonNull(user, "user");
-    this.product = Objects.requireNonNull(product, "product");
+    this.user = user;
+    this.product = product;
     this.amount = amount;
     this.quantity = quantity;
     this.date = LocalDateTime.now();
