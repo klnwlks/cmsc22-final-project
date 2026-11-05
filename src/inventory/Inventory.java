@@ -26,6 +26,13 @@ public class Inventory implements Serializable {
     return product;
   }
 
+  public void removeProduct(Product product, User user) {
+    requireManager(user);
+    if (inventory.remove(product) == null) {
+      throw new IllegalArgumentException("product does not exist in inventory");
+    }
+  }
+
   public void restockProduct(Product product, int newStock, User user) {
     requireManager(user);
     if (newStock < 0) {
@@ -90,7 +97,7 @@ public class Inventory implements Serializable {
 
   // check if user is a manager
   private static void requireManager(User user) {
-    if (!user instanceof Manager) {
+    if (!(user instanceof Manager)) {
       throw new SecurityException("only managers can manage products");
     }
   }
