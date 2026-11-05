@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.GridPane?>
+<DialogPane xmlns:fx="http://javafx.com/fxml/1">
+    <buttonTypes>
+        <ButtonType fx:constant="OK" />
+        <ButtonType fx:constant="CANCEL" />
+    </buttonTypes>
+    <content>
+        <GridPane hgap="10" vgap="10">
+            <Label text="Product name" GridPane.rowIndex="0" />
+            <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="Size / Description" GridPane.rowIndex="1" />
+            <TextField fx:id="description" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Category" GridPane.rowIndex="2" />
+            <ComboBox fx:id="category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Price (whole pesos)" GridPane.rowIndex="3" />
+            <TextField fx:id="price" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Stock quantity" GridPane.rowIndex="4" />
+            <TextField fx:id="stock" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="error" GridPane.rowIndex="5" GridPane.columnSpan="2" />
+        </GridPane>
+    </content>
+</DialogPane>
