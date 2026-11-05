@@ -10,7 +10,6 @@
             <Button text="Gantt calendar" disable="true" maxWidth="Infinity" />
             <Button text="Products &amp; Inventory" maxWidth="Infinity" />
             <Button text="Transaction logs" onAction="#showTransactions" maxWidth="Infinity" />
-            <Button text="Audit logs" disable="true" maxWidth="Infinity" />
             <Region VBox.vgrow="ALWAYS" />
             <Label fx:id="userLabel" />
             <Button text="Log out" disable="true" />
