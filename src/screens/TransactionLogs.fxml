@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <VBox spacing="12" prefWidth="180">
+            <Label text="Cowlendar" />
+            <Label text="DTRI Farm Fresh" />
+            <Separator />
+            <Button text="Gantt calendar" disable="true" maxWidth="Infinity" />
+            <Button text="Products &amp; Inventory" onAction="#showInventory" maxWidth="Infinity" />
+            <Button text="Transaction logs" maxWidth="Infinity" />
+            <Button text="Audit logs" disable="true" maxWidth="Infinity" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Label fx:id="userLabel" />
+            <Button text="Log out" disable="true" />
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="16">
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label text="Transaction logs" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="Refresh" onAction="#refresh" />
+            </HBox>
+            <TableView fx:id="transactionTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="dateColumn" text="Date and time" prefWidth="170" />
+                    <TableColumn fx:id="userColumn" text="User" prefWidth="130" />
+                    <TableColumn fx:id="productColumn" text="Product" prefWidth="190" />
+                    <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="90" />
+                    <TableColumn fx:id="amountColumn" text="Amount (PHP)" prefWidth="120" />
+                </columns>
+                <placeholder><Label text="No transactions recorded." /></placeholder>
+            </TableView>
+            <Label fx:id="transactionSummary" />
+        </VBox>
+    </center>
+</BorderPane>
