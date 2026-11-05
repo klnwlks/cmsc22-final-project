@@ -53,7 +53,6 @@ public class Inventory implements Serializable {
   }
 
   public Product findProduct(String productName) {
-    Objects.requireNonNull(productName, "productName");
     Product match = null;
     // linear search product
     for (Product product : inventory.keySet()) {
@@ -91,7 +90,7 @@ public class Inventory implements Serializable {
 
   // check if user is a manager
   private static void requireManager(User user) {
-    if (!(Objects.requireNonNull(user, "user") instanceof Manager)) {
+    if (!user instanceof Manager) {
       throw new SecurityException("only managers can manage products");
     }
   }
