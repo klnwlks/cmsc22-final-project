@@ -11,10 +11,8 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -52,15 +50,13 @@ public class System implements Serializable {
     return newUser;
   }
 
-  // save as a binary path
+  // Save directly to the binary file; failures propagate to the caller.
   public void save(Path path) throws IOException {
     Path target = Objects.requireNonNull(path, "path").toAbsolutePath();
     Path parent = target.getParent();
     Files.createDirectories(parent);
-    try (ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(path))) {
+    try (ObjectOutputStream output = new ObjectOutputStream(Files.newOutputStream(target))) {
       output.writeObject(this);
-    } catch (IOException e) {
-      e.printStackTrace();
     }
   }
 
