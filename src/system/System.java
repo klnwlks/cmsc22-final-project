@@ -52,6 +52,7 @@ public class System implements Serializable {
     return newUser;
   }
 
+  // save as a binary path
   public void save(Path path) throws IOException {
     Path target = Objects.requireNonNull(path, "path").toAbsolutePath();
     Path parent = target.getParent();

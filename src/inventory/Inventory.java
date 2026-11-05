@@ -41,7 +41,7 @@ public class Inventory implements Serializable {
   }
 
   public int getStock(Product product) {
-    Integer stock = inventory.get("product");
+    Integer stock = inventory.get(product);
     if (stock == null) {
       throw new IllegalArgumentException("product does not exist in inventory");
     }
