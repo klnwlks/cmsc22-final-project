@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css, @TransactionLogsStyle.css">
     <left>
-        <VBox spacing="12" prefWidth="180">
+        <VBox spacing="12" prefWidth="180" styleClass="side-bar">
             <Label text="Cowlendar" />
             <Label text="DTRI Farm Fresh" />
             <Separator />
-            <Button text="Gantt calendar" disable="true" maxWidth="Infinity" />
-            <Button text="Products &amp; Inventory" onAction="#showInventory" maxWidth="Infinity" />
-            <Button text="Transaction logs" maxWidth="Infinity" />
+            <Button text="Gantt calendar" disable="true" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Button text="Products &amp; Inventory" onAction="#showInventory" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Button text="Transaction logs" maxWidth="Infinity" styleClass="side-bar-pressed-btn" />
             <Region VBox.vgrow="ALWAYS" />
             <Label fx:id="userLabel" />
             <Button text="Log out" disable="true" />
         </VBox>
     </left>
     <center>
-        <VBox spacing="16">
+        <VBox spacing="16" styleClass="">
             <HBox spacing="12" alignment="CENTER_LEFT">
                 <Label text="Transaction logs" />
                 <Region HBox.hgrow="ALWAYS" />

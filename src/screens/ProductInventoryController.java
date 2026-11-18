@@ -75,7 +75,7 @@ public class ProductInventoryController {
     } else {
       editProductButton.setDisable(true);
     }
-
+    
     productColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().product().getName()));
     categoryColumn.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().product().getCategory()));
     sizeColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().product().getDescription()));

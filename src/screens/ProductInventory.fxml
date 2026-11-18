@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css, @ProductInventoryStyle.css">
     <left>
-        <VBox spacing="12" prefWidth="180">
+        <VBox spacing="12" prefWidth="180" styleClass="side-bar">
             <Label text="Cowlendar" />
             <Label text="DTRI Farm Fresh" />
             <Separator />
-            <Button text="Gantt calendar" disable="true" maxWidth="Infinity" />
-            <Button text="Products &amp; Inventory" maxWidth="Infinity" />
-            <Button text="Transaction logs" onAction="#showTransactions" maxWidth="Infinity" />
+            <Button text="Gantt calendar" disable="true" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Button text="Products &amp; Inventory" maxWidth="Infinity" styleClass="side-bar-pressed-btn" />
+            <Button text="Transaction logs" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Region VBox.vgrow="ALWAYS" />
             <Label fx:id="userLabel" />
             <Button text="Log out" disable="true" />
         </VBox>
     </left>
     <center>
-        <VBox spacing="16">
-            <Label text="Cowlendar / Products" />
-            <HBox spacing="12" alignment="CENTER_LEFT">
-                <Label text="Product and Inventory Management" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Button fx:id="editProductButton" text="Edit product" onAction="#editProduct" />
-                <Button fx:id="addProductButton" text="Add product" onAction="#addProduct" />
+        <VBox spacing="16" styleClass="main-screen">
+        	<VBox>
+	            <Label text="Cowlendar / Products" />
+	            <HBox spacing="12" alignment="CENTER_LEFT">
+	                <Label text="Product and Inventory Management" />
+	                <Region HBox.hgrow="ALWAYS" />
+	                <Button fx:id="editProductButton" text="Edit product" onAction="#editProduct" />
+	                <Button fx:id="addProductButton" text="Add product" onAction="#addProduct" />
+	            </HBox>
+            </VBox>
+            <HBox spacing="32" styleClass="main-screen">
+                <VBox spacing="6" styleClass="card-type-1"><Label text="Total products" styleClass="card-type-1-text, bold" /><Label fx:id="totalProducts" text="0"  styleClass="card-type-1-number, bold"/><Label fx:id="categorySummary" text="Across 0 categories" styleClass="card-type-1-text" /></VBox>
+                <VBox spacing="6" styleClass="card-type-2"><Label text="Products in Stock" styleClass="card-type-2-text, bold" /><Label fx:id="productsInStock" text="0" styleClass="card-type-2-number, bold" /><Label text="Available for sale" styleClass="card-type-2-text" /></VBox>
+                <VBox spacing="6" styleClass="card-type-2"><Label text="Current Product in Stock" styleClass="card-type-2-text, bold" /><Label fx:id="currentInStock" text="0" styleClass="card-type-2-number, bold" /><Label fx:id="currentSummary" text="All categories" styleClass="card-type-2-text" /></VBox>
             </HBox>
-            <HBox spacing="32">
-                <VBox spacing="6"><Label text="Total products" /><Label fx:id="totalProducts" text="0" /><Label fx:id="categorySummary" text="Across 0 categories" /></VBox>
-                <VBox spacing="6"><Label text="Products in Stock" /><Label fx:id="productsInStock" text="0" /><Label text="Available for sale" /></VBox>
-                <VBox spacing="6"><Label text="Current Product in Stock" /><Label fx:id="currentInStock" text="0" /><Label fx:id="currentSummary" text="All categories" /></VBox>
-            </HBox>
-            <FlowPane hgap="6" vgap="6">
+            <FlowPane hgap="6" vgap="6" styleClass="main-screen">
                 <TextField fx:id="searchField" promptText="Search products" />
                 <HBox fx:id="categoryFilters" spacing="6" />
             </FlowPane>

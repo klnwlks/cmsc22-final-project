@@ -1,0 +1,40 @@
+* {
+	-fx-font-family: 'Arial';
+	-fx-text-fill: black;
+}
+
+.button {
+	-fx-background-color: white;
+	-fx-text-fill: #2B3B80;
+	-fx-border-radius: 10px;
+	-fx-background-radius: 10px;
+	-fx-border-color: gray;
+	-fx-border-width: 1px;
+}
+
+.side-bar {
+	-fx-background-color: #141A2D;
+}
+
+.side-bar-btn {
+	-fx-background-color: #141A2D;
+	-fx-text-fill: #A9BADE;
+	-fx-border-width: 0px;
+	-fx-alignment: CENTER_LEFT;
+}
+
+.side-bar-pressed-btn {
+	-fx-background-color: #7C7879;
+	-fx-text-fill: #F7E6D0;
+	-fx-border-width: 0px;
+	-fx-alignment: CENTER_LEFT;
+}
+
+.main-screen {
+	-fx-background-color: #FEFAF2;
+	-fx-alignment: CENTER;
+}
+
+.bold {
+	-fx-font-weight: bold;
+}

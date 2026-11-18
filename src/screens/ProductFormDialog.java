@@ -54,6 +54,11 @@ public class ProductFormDialog extends Dialog<ProductFormDialog.Result> {
       price.setText(Integer.toString(existing.getPrice()));
       stock.setEditable(false);
     }
+    name.prefWidthProperty().bind(getDialogPane().widthProperty().multiply(0.9));
+    description.prefWidthProperty().bind(getDialogPane().widthProperty().multiply(0.9));
+    price.prefWidthProperty().bind(getDialogPane().widthProperty().multiply(0.9));
+    stock.prefWidthProperty().bind(getDialogPane().widthProperty().multiply(0.9));
+    category.prefWidthProperty().bind(getDialogPane().widthProperty().multiply(0.9));
     getDialogPane().lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
       try {
         if (name.getText().isBlank())

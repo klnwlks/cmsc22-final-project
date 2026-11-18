@@ -1,0 +1,29 @@
+.card-type-1 {
+	-fx-background-color: #141A2D;
+	-fx-border-radius: 10px;
+	-fx-background-radius: 10px;
+}
+
+.card-type-1-text {
+	-fx-text-fill: #A9BADE;
+}
+
+.card-type-1-number {
+	-fx-text-fill: #F7E6D0;
+}
+
+.card-type-2 {
+	-fx-background-color: white;
+	-fx-border-radius: 10px;
+	-fx-background-radius: 10px;
+	-fx-border-width: 1px;
+	-fx-border-color: #E8E1D5;
+}
+
+.card-type-2-text {
+	-fx-text-fill: #5A6179;
+}
+
+.card-type-2-number {
+	-fx-text-fill: #141B2C;
+}
