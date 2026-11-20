@@ -7,7 +7,7 @@
             <Label text="Cowlendar" />
             <Label text="DTRI Farm Fresh" />
             <Separator />
-            <Button text="Gantt calendar" disable="true" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Button fx:id="salesButton" text="Sales" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Button text="Products &amp; Inventory" onAction="#showInventory" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Button text="Transaction logs" maxWidth="Infinity" styleClass="side-bar-pressed-btn" />
             <Region VBox.vgrow="ALWAYS" />
