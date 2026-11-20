@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css">
+    <left>
+        <VBox spacing="12" prefWidth="180" styleClass="side-bar">
+            <Label text="Cowlendar" />
+            <Label text="DTRI Farm Fresh" />
+            <Separator />
+            <Button text="Sales" maxWidth="Infinity" styleClass="side-bar-pressed-btn" />
+            <Button text="Products &amp; Inventory" onAction="#showInventory" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Button text="Transaction logs" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Label fx:id="userLabel" />
+            <Button text="Log out" disable="true" />
+        </VBox>
+    </left>
+    <center>
+        <SplitPane dividerPositions="0.5">
+            <VBox spacing="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10" /></padding>
+                <Label text="Products" />
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <content><FlowPane fx:id="products" hgap="10" vgap="10" /></content>
+                </ScrollPane>
+            </VBox>
+            <VBox spacing="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10" /></padding>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Current Sale" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="Clear" onAction="#clear" />
+                </HBox>
+                <TableView fx:id="cart" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="productColumn" text="Product" prefWidth="140" />
+                        <TableColumn fx:id="quantityColumn" text="Qty" prefWidth="45" />
+                        <TableColumn fx:id="priceColumn" text="Unit Price" prefWidth="80" />
+                        <TableColumn fx:id="totalColumn" text="Total" prefWidth="80" />
+                    </columns>
+                    <placeholder><Label text="Select a product to add it to the sale." /></placeholder>
+                </TableView>
+                <Button text="Remove selected item" onAction="#removeSelected" />
+                <Label text="Completed items are recorded in transaction logs." wrapText="true" />
+                <HBox spacing="10"><Label text="Total" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="totalLabel" /></HBox>
+                <Label fx:id="message" wrapText="true" />
+                <Button text="Complete Sale" onAction="#completeSale" />
+            </VBox>
+        </SplitPane>
+    </center>
+</BorderPane>
