@@ -52,7 +52,7 @@ public class SalesController {
     quantityColumn.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().quantity()));
     priceColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(money(cell.getValue().product().getPrice())));
     totalColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(
-        money(cell.getValue().product().getPrice() * cell.getValue().quantity())));
+        money((double) cell.getValue().product().getPrice() * cell.getValue().quantity())));
     updateCart();
   }
 
@@ -140,12 +140,12 @@ public class SalesController {
     cart.setItems(FXCollections.observableArrayList(quantities.entrySet().stream()
         .map(entry -> new Line(entry.getKey(), entry.getValue())).toList()));
     double total = quantities.entrySet().stream()
-        .mapToLong(entry -> entry.getKey().getPrice() * entry.getValue()).sum();
+        .mapToDouble(entry -> (double) entry.getKey().getPrice() * entry.getValue()).sum();
     totalLabel.setText(money(total));
   }
 
   private static String money(double amount) {
-    return String.format("₱%,d", amount);
+    return String.format("₱%,.2f", amount);
   }
 
   @FXML
