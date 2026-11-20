@@ -3,7 +3,6 @@ package main;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -12,6 +11,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import screens.LoginController;
+import screens.SalesController;
+import users.Clerk;
 import screens.ProductInventoryController;
 import screens.TransactionLogsController;
 import users.User;
@@ -26,6 +29,8 @@ public class App extends Application {
   private TransactionLogsController transactionController;
   private Scene inventoryScene;
   private Scene transactionScene;
+  private Scene salesScene;
+  private SalesController salesController;
 
   @Override
   public void start(Stage stage) throws java.io.IOException {
@@ -38,18 +43,36 @@ public class App extends Application {
       return;
     }
 
-    // Reuse a saved user instead of creating another Manager on every launch.
-    ArrayList<User> users = system.getUsers();
-    User currentUser;
-    if (users.isEmpty()) {
-      currentUser = system.newUser("Manager", "", "manager");
-    } else {
-      currentUser = users.getFirst();
-    }
+    // default is now ung user login
+    // by default nagcrecreate sha ng user rather than actually checking if meron
+    // katamad magmemorize password
+    FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/screens/Login.fxml"));
+    loginLoader.setController(new LoginController(system, user -> {
+      try {
+        showUserScreens(stage, user);
+        system.save(DATA_FILE);
+      } catch (IOException exception) {
+        new Alert(Alert.AlertType.ERROR, "Could not open the account: " + exception.getMessage()).showAndWait();
+      }
+    }));
+    stage.setScene(new Scene(loginLoader.load()));
+    stage.setTitle("Cowlendar ");
+
+    // save on close of root
+    stage.setOnCloseRequest(event -> {
+      try {
+        system.save(DATA_FILE);
+      } catch (IOException exception) {
+        new Alert(Alert.AlertType.ERROR, "Could not save data: " + exception.getMessage()).showAndWait();
+      }
+    });
+    stage.show();
+  }
+
+  private void showUserScreens(Stage stage, User currentUser) throws IOException {
     inventoryController = new ProductInventoryController(system, currentUser, () -> showTransactions(stage));
     transactionController = new TransactionLogsController(system, currentUser, () -> showInventory(stage));
 
-    // load both scenes with the same model and current user.
     FXMLLoader inventoryLoader = new FXMLLoader(App.class.getResource("/screens/ProductInventory.fxml"));
     inventoryLoader.setController(inventoryController);
     inventoryScene = new Scene(inventoryLoader.load(), 1000, 700);
@@ -58,22 +81,32 @@ public class App extends Application {
     transactionLoader.setController(transactionController);
     transactionScene = new Scene(transactionLoader.load(), 1000, 700);
 
+    // dont show sales screen to maanger
+    Button inventorySales = (Button) inventoryLoader.getNamespace().get("salesButton");
+    Button transactionSales = (Button) transactionLoader.getNamespace().get("salesButton");
+    boolean isClerk = currentUser instanceof Clerk;
+    inventorySales.setVisible(isClerk);
+    inventorySales.setManaged(isClerk);
+    transactionSales.setVisible(isClerk);
+    transactionSales.setManaged(isClerk);
+    if (currentUser instanceof Clerk clerk) {
+      // lambda funcs para may reference to change screeens
+      salesController = new SalesController(clerk, () -> showInventory(stage), () -> showTransactions(stage));
+      FXMLLoader salesLoader = new FXMLLoader(App.class.getResource("/screens/Sales.fxml"));
+      salesLoader.setController(salesController);
+      salesScene = new Scene(salesLoader.load(), 1000, 700);
+      inventorySales.setOnAction(event -> showSales(stage));
+      transactionSales.setOnAction(event -> showSales(stage));
+      showSales(stage);
+      return;
+    }
     showInventory(stage);
-    stage.focusedProperty().addListener((observable, wasFocused, isFocused) -> {
-      if (isFocused) {
-        if (stage.getScene() == transactionScene)
-          transactionController.refresh();
-        else
-          inventoryController.refresh();
-      }
-    });
-    stage.setOnCloseRequest(event -> {
-      try {
-        system.save(DATA_FILE);
-      } catch (IOException exception) {
-      }
-    });
-    stage.show();
+  }
+
+  private void showSales(Stage stage) {
+    salesController.refresh();
+    stage.setScene(salesScene);
+    stage.setTitle("Cowlendar - password123");
   }
 
   private void showInventory(Stage stage) {
