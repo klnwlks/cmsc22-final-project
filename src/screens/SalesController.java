@@ -52,7 +52,7 @@ public class SalesController {
     quantityColumn.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().quantity()));
     priceColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(money(cell.getValue().product().getPrice())));
     totalColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(
-        money((long) cell.getValue().product().getPrice() * cell.getValue().quantity())));
+        money(cell.getValue().product().getPrice() * cell.getValue().quantity())));
     updateCart();
   }
 
@@ -144,7 +144,7 @@ public class SalesController {
     totalLabel.setText(money(total));
   }
 
-  private static String money(long amount) {
+  private static String money(double amount) {
     return String.format("₱%,d", amount);
   }
 
