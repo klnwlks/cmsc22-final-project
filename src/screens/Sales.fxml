@@ -2,51 +2,72 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css, @SalesStyle.css">
     <left>
         <VBox spacing="12" prefWidth="180" styleClass="side-bar">
-            <Label text="Cowlendar" />
-            <Label text="DTRI Farm Fresh" />
+            <Label text="▣ Cowlendar" styleClass="brand-name" />
+            <Label text="DTRI Farm Fresh" styleClass="brand-caption" />
             <Separator />
             <Button text="Sales" maxWidth="Infinity" styleClass="side-bar-pressed-btn" />
             <Button text="Products &amp; Inventory" onAction="#showInventory" maxWidth="Infinity" styleClass="side-bar-btn" />
-            <Button text="Transaction logs" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Button text="Transactions" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Region VBox.vgrow="ALWAYS" />
-            <Label fx:id="userLabel" />
-            <Button text="Log out" disable="true" />
+            <VBox spacing="2" styleClass="account-card">
+                <Label fx:id="userLabel" styleClass="account-name" />
+                <Label text="Log out" styleClass="account-caption" />
+            </VBox>
         </VBox>
     </left>
     <center>
-        <SplitPane dividerPositions="0.5">
-            <VBox spacing="10">
-                <padding><Insets top="10" right="10" bottom="10" left="10" /></padding>
-                <Label text="Products" />
-                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
-                    <content><FlowPane fx:id="products" hgap="10" vgap="10" /></content>
-                </ScrollPane>
-            </VBox>
-            <VBox spacing="10">
-                <padding><Insets top="10" right="10" bottom="10" left="10" /></padding>
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Current Sale" />
+        <VBox spacing="14" styleClass="sales-screen">
+            <VBox spacing="5">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <VBox spacing="5">
+                        <Label text="Cowlendar / Sales" styleClass="breadcrumb" />
+                        <Label text="Point of Sale System" styleClass="page-title" />
+                    </VBox>
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button text="Clear" onAction="#clear" />
+                    <Label fx:id="currentMonth" styleClass="month-label" />
                 </HBox>
-                <TableView fx:id="cart" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="productColumn" text="Product" prefWidth="140" />
-                        <TableColumn fx:id="quantityColumn" text="Qty" prefWidth="45" />
-                        <TableColumn fx:id="priceColumn" text="Unit Price" prefWidth="80" />
-                        <TableColumn fx:id="totalColumn" text="Total" prefWidth="80" />
-                    </columns>
-                    <placeholder><Label text="Select a product to add it to the sale." /></placeholder>
-                </TableView>
-                <Button text="Remove selected item" onAction="#removeSelected" />
-                <Label text="Completed items are recorded in transaction logs." wrapText="true" />
-                <HBox spacing="10"><Label text="Total" /><Region HBox.hgrow="ALWAYS" /><Label fx:id="totalLabel" /></HBox>
-                <Label fx:id="message" wrapText="true" />
-                <Button text="Complete Sale" onAction="#completeSale" />
             </VBox>
-        </SplitPane>
+            <HBox spacing="16" alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+                <VBox spacing="10" HBox.hgrow="ALWAYS" styleClass="catalog-panel">
+                    <TextField fx:id="searchField" promptText="Search products" styleClass="search-field" />
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="catalog-scroll">
+                        <content>
+                            <VBox spacing="10">
+                                <FlowPane fx:id="categoryFilters" hgap="6" vgap="6" styleClass="category-filters" />
+                                <FlowPane fx:id="products" hgap="9" vgap="9" styleClass="product-grid" />
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </VBox>
+                <VBox spacing="10" prefWidth="390" minWidth="330" styleClass="sale-panel">
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label text="Current Sale" styleClass="panel-title" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="Clear" onAction="#clear" styleClass="clear-button" />
+                    </HBox>
+                    <TableView fx:id="cart" VBox.vgrow="ALWAYS" styleClass="cart-table">
+                        <columns>
+                            <TableColumn fx:id="productColumn" text="Product" prefWidth="105" />
+                            <TableColumn fx:id="quantityColumn" text="Qty" prefWidth="86" />
+                            <TableColumn fx:id="priceColumn" text="Unit price" prefWidth="75" />
+                            <TableColumn fx:id="totalColumn" text="Total" prefWidth="70" />
+                            <TableColumn fx:id="removeColumn" text="" prefWidth="34" />
+                        </columns>
+                        <placeholder><Label text="Choose products to start a sale." styleClass="empty-message" /></placeholder>
+                    </TableView>
+                    <Label text="Each completed sale is recorded in the transaction log." wrapText="true" styleClass="audit-note" />
+                    <HBox styleClass="total-row" alignment="CENTER_LEFT">
+                        <Label text="Total" styleClass="total-caption" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="totalLabel" text="₱0.00" styleClass="total-amount" />
+                    </HBox>
+                    <Label fx:id="message" wrapText="true" styleClass="message-label" />
+                    <Button text="Complete Sale" onAction="#completeSale" maxWidth="Infinity" styleClass="complete-button" />
+                </VBox>
+            </HBox>
+        </VBox>
     </center>
 </BorderPane>
