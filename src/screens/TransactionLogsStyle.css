@@ -33,6 +33,7 @@
     -fx-background-color: transparent;
     -fx-text-fill: #a9bade;
     -fx-border-color: transparent;
+    -fx-cursor: hand;
 }
 
 .side-bar-btn:hover {
@@ -84,6 +85,7 @@
     -fx-border-color: #c9c4bd;
     -fx-border-radius: 14px;
     -fx-padding: 2px 6px;
+    -fx-cursor: hand;
 }
 
 .summary-cards {
@@ -150,6 +152,7 @@
 
 .refresh-button {
     -fx-padding: 7px 14px;
+    -fx-cursor: hand;
 }
 
 .table-card {
@@ -159,6 +162,10 @@
     -fx-border-radius: 10px;
     -fx-border-width: 1px;
     -fx-clip: true;
+}
+
+.table-cell {
+    -fx-alignment: CENTER;
 }
 
 .transactions-table {
@@ -225,6 +232,7 @@
 .page-button {
     -fx-padding: 6px 12px;
     -fx-font-size: 10px;
+    -fx-cursor: hand;
 }
 
 .page-number {

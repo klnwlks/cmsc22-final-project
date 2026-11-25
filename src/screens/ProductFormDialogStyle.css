@@ -1,3 +1,78 @@
+.category {
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+	-fx-text-fill: #141a2d;
+}
+
 .input-field {
-	-fx-alignment: CENTER;
+	-fx-background-color: white;
+    -fx-text-fill: #141a2d;
+    -fx-prompt-text-fill: #8a8d98;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #6f7488;
+    -fx-border-width: 0.5px;
+    -fx-padding: 12px;
+	-fx-alignment: CENTER-LEFT;
+}
+
+.input-field:hover {
+    -fx-border-color: #2563EB;
+}
+
+.category-combobox {
+    -fx-background-color: white;
+    -fx-text-fill: #141a2d;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #6f7488;
+    -fx-border-width: 0.5px;
+	-fx-padding: 0px 0px 0px 12px;
+	-fx-alignment: CENTER-LEFT;
+}
+
+.category-combobox:hover {
+    -fx-border-color: #2563EB;
+    -fx-opacity: 0.85;
+}
+
+.category-combobox:pressed {
+    -fx-opacity: 0.7;
+}
+
+.category-combobox .list-cell {
+    -fx-text-fill: #374151;
+    -fx-padding: 12px 12px 12px 2px;
+    -fx-cursor: hand;
+}
+
+.category-combobox .list-cell:hover {
+    -fx-background-color: #DBEAFE;
+    -fx-text-fill: #2563EB;
+}
+
+.dialog-pane .button:default {
+    -fx-background-color: #2f44a6;
+    -fx-text-fill: white;
+    -fx-border-width: 0px;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button:cancel {
+    -fx-background-color: white;
+    -fx-text-fill: #8a2a2a;
+    -fx-border-radius: 8px;
+    -fx-border-color: #8a2a2a;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button:hover {
+    -fx-opacity: 0.85;
+}
+
+.dialog-pane .button:pressed {
+    -fx-opacity: 0.7;
 }

@@ -32,6 +32,7 @@
     -fx-text-fill: #a9bade;
     -fx-border-color: transparent;
     -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
 }
 
 .side-bar-btn:hover {
@@ -84,6 +85,7 @@
     -fx-padding: 7px 13px;
     -fx-background-radius: 16px;
     -fx-border-radius: 16px;
+    -fx-cursor: hand;
 }
 
 .primary-action {
@@ -101,10 +103,12 @@
     -fx-background-color: #fffdf9;
     -fx-text-fill: #283a8e;
     -fx-border-color: #3448a5;
+    -fx-cursor: hand;
 }
 
 .secondary-action:disabled {
     -fx-opacity: 0.65;
+    -fx-cursor: not-allowed;
 }
 
 .stats-row {
@@ -176,6 +180,7 @@
     -fx-background-radius: 15px;
     -fx-padding: 6px 10px;
     -fx-font-size: 9px;
+    -fx-cursor: hand;
 }
 
 .category-filters .toggle-button:selected {
@@ -183,6 +188,10 @@
     -fx-text-fill: white;
     -fx-border-color: #3448a5;
     -fx-font-weight: bold;
+}
+
+.table-cell {
+    -fx-alignment: CENTER_LEFT;
 }
 
 .product-table-card {
@@ -203,6 +212,8 @@
 
 .product-table .column-header-background {
     -fx-background-color: #f5edcf;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
 }
 
 .product-table .column-header,
@@ -217,6 +228,7 @@
     -fx-font-size: 10px;
     -fx-font-weight: bold;
     -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10px;
 }
 
 .product-table .table-cell {
@@ -296,6 +308,7 @@
     -fx-text-fill: #73798b;
     -fx-font-size: 15px;
     -fx-padding: 0 6px;
+    -fx-cursor: hand;
 }
 
 .delete-button:hover {
@@ -322,6 +335,7 @@
     -fx-background-radius: 15px;
     -fx-padding: 5px 10px;
     -fx-font-size: 9px;
+    -fx-cursor: hand;
 }
 
 .page-number {
@@ -337,6 +351,7 @@
 
 .page-button:disabled {
     -fx-opacity: 0.55;
+    -fx-cursor: not-allowed;
 }
 
 .product-table .placeholder .label {

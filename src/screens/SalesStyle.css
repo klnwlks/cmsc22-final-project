@@ -32,6 +32,7 @@
     -fx-text-fill: #a9bade;
     -fx-border-color: transparent;
     -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
 }
 
 .side-bar-btn:hover {
@@ -133,6 +134,7 @@
     -fx-background-radius: 15px;
     -fx-padding: 6px 10px;
     -fx-font-size: 9px;
+    -fx-cursor: hand;
 }
 
 .category-filters .toggle-button:selected {
@@ -223,6 +225,7 @@
     -fx-background-radius: 14px;
     -fx-padding: 5px 10px;
     -fx-font-size: 9px;
+    -fx-cursor: hand;
 }
 
 .cart-table {
@@ -277,6 +280,7 @@
     -fx-padding: 0;
     -fx-font-size: 10px;
     -fx-font-weight: bold;
+    -fx-cursor: hand;
 }
 
 .quantity-count {
@@ -292,6 +296,7 @@
     -fx-text-fill: #8990a3;
     -fx-font-size: 14px;
     -fx-padding: 0 4px;
+    -fx-cursor: hand;
 }
 
 .remove-button:hover {
@@ -335,6 +340,7 @@
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-padding: 9px 16px;
+    -fx-cursor: hand;
 }
 
 .complete-button:hover {
