@@ -27,6 +27,8 @@ public class App extends Application {
   private System system;
   private ProductInventoryController inventoryController;
   private TransactionLogsController transactionController;
+  private LoginController loginController;
+  private Scene loginScene;
   private Scene inventoryScene;
   private Scene transactionScene;
   private Scene salesScene;
@@ -46,16 +48,23 @@ public class App extends Application {
     // default is now ung user login
     // by default nagcrecreate sha ng user rather than actually checking if meron
     // katamad magmemorize password
+
+    //ABOVE COMMENT FIXED - OKAY NA LUKAS  nag gawa na ako login system
     FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/screens/Login.fxml"));
-    loginLoader.setController(new LoginController(system, user -> {
+    
+    // set the controller for the login screen para maayos log out rin instead of just closing the app goes back to log in screen
+    loginController = new LoginController(system, user -> {
       try {
         showUserScreens(stage, user);
         system.save(DATA_FILE);
       } catch (IOException exception) {
         new Alert(Alert.AlertType.ERROR, "Could not open the account: " + exception.getMessage()).showAndWait();
       }
-    }));
-    stage.setScene(new Scene(loginLoader.load()));
+    });
+    // logout button now works mga syug
+    loginLoader.setController(loginController);
+    loginScene = new Scene(loginLoader.load());
+    stage.setScene(loginScene);
     stage.setTitle("Cowlendar ");
 
     // save on close of root
@@ -76,10 +85,12 @@ public class App extends Application {
     FXMLLoader inventoryLoader = new FXMLLoader(App.class.getResource("/screens/ProductInventory.fxml"));
     inventoryLoader.setController(inventoryController);
     inventoryScene = new Scene(inventoryLoader.load(), 1000, 700);
+    setLogoutAction(inventoryLoader, stage);
 
     FXMLLoader transactionLoader = new FXMLLoader(App.class.getResource("/screens/TransactionLogs.fxml"));
     transactionLoader.setController(transactionController);
     transactionScene = new Scene(transactionLoader.load(), 1000, 700);
+    setLogoutAction(transactionLoader, stage);
 
     // dont show sales screen to maanger
     Button inventorySales = (Button) inventoryLoader.getNamespace().get("salesButton");
@@ -95,12 +106,30 @@ public class App extends Application {
       FXMLLoader salesLoader = new FXMLLoader(App.class.getResource("/screens/Sales.fxml"));
       salesLoader.setController(salesController);
       salesScene = new Scene(salesLoader.load(), 1000, 700);
+      setLogoutAction(salesLoader, stage);
       inventorySales.setOnAction(event -> showSales(stage));
       transactionSales.setOnAction(event -> showSales(stage));
       showSales(stage);
       return;
     }
     showInventory(stage);
+  }
+
+  private void setLogoutAction(FXMLLoader loader, Stage stage) {
+    Button logoutButton = (Button) loader.getNamespace().get("logoutButton");
+    logoutButton.setOnAction(event -> logout(stage));
+  }
+
+  private void logout(Stage stage) {
+    try {
+      system.save(DATA_FILE);
+      loginController.showLoginMode();
+      stage.setScene(loginScene);
+      stage.setTitle("Cowlendar");
+    } catch (IOException exception) {
+      new Alert(Alert.AlertType.ERROR, "Could not save data before logging out: " + exception.getMessage())
+          .showAndWait();
+    }
   }
 
   private void showSales(Stage stage) {

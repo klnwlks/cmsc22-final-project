@@ -10,12 +10,14 @@
       alignment="CENTER" spacing="12" prefWidth="380" prefHeight="420"
       styleClass="main-screen">
     <padding><Insets top="32" right="36" bottom="32" left="36"/></padding>
-    <Label text="Cowlendar" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
-    <Label text="Create a clerk or manager account"/>
+    <Label fx:id="titleLabel" text="Cowlendar" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
+    <Label fx:id="subtitleLabel" text="Create a clerk or manager account"/>
     <TextField fx:id="usernameField" promptText="Username" maxWidth="280"/>
     <PasswordField fx:id="passwordField" promptText="Password" maxWidth="280"/>
     <ComboBox fx:id="roleField" promptText="Choose a role" maxWidth="280"/>
     <Label fx:id="errorLabel" wrapText="true" maxWidth="280" style="-fx-text-fill: #b00020;"/>
-    <Button text="Create account" onAction="#handleCreateAccount"
+    <Button fx:id="submitButton" text="Create account" onAction="#handleSubmit"
             maxWidth="280" defaultButton="true"/>
+    <Button fx:id="switchModeButton" text="Already have an account? Log in"
+            onAction="#switchMode" maxWidth="280"/>
 </VBox>

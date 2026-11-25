@@ -36,6 +36,8 @@ public class ProductInventoryController {
   @FXML
   private Label userLabel;
   @FXML
+  private Label userInitial;
+  @FXML
   private HBox categoryFilters;
   @FXML
   private Label totalProducts, categorySummary, productsInStock;
@@ -76,7 +78,8 @@ public class ProductInventoryController {
 
   @FXML
   private void initialize() {
-    userLabel.setText(currentUser.getName());
+    userLabel.setText(currentUser instanceof Manager ? "Manager" : "Employee");
+    userInitial.setText(userLabel.getText().substring(0, 1));
     // disable if not manager
     addProductButton.setDisable(!(currentUser instanceof Manager));
 

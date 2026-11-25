@@ -50,6 +50,18 @@ public class System implements Serializable {
     return newUser;
   }
 
+    //login
+  public User authenticate(String username, String password) {
+    if (username == null || password == null) {
+      return null;
+    }
+    return users.stream()
+        .filter(user -> user.getName().equalsIgnoreCase(username))
+        .filter(user -> user.matchesPassword(password))
+        .findFirst()
+        .orElse(null);
+  }
+
   // Save directly to the binary file; failures propagate to the caller.
   public void save(Path path) throws IOException {
     Path target = Objects.requireNonNull(path, "path").toAbsolutePath();

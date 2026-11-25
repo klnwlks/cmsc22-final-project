@@ -12,10 +12,16 @@
             <Button text="Products &amp; Inventory" onAction="#showInventory" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Button text="Transactions" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Region VBox.vgrow="ALWAYS" />
-            <VBox spacing="2" styleClass="account-card">
-                <Label fx:id="userLabel" styleClass="account-name" />
-                <Label text="Log out" styleClass="account-caption" />
-            </VBox>
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="account-card">
+                <StackPane minWidth="44" prefWidth="44" maxWidth="44" minHeight="44" prefHeight="44" maxHeight="44"
+                           styleClass="account-avatar">
+                    <Label fx:id="userInitial" styleClass="account-initial" />
+                </StackPane>
+                <VBox spacing="2">
+                    <Label fx:id="userLabel" styleClass="account-name" />
+                    <Button fx:id="logoutButton" text="Log out" styleClass="account-caption logout-button" />
+                </VBox>
+            </HBox>
         </VBox>
     </left>
     <center>

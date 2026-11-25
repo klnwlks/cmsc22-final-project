@@ -51,7 +51,7 @@ public class SalesController {
   @FXML
   private TableColumn<Line, Void> removeColumn;
   @FXML
-  private Label userLabel, totalLabel, message, currentMonth;
+  private Label userLabel, userInitial, totalLabel, message, currentMonth;
 
   private final Clerk clerk;
   private final Runnable onInventory, onTransactions;
@@ -68,7 +68,8 @@ public class SalesController {
 
   @FXML
   private void initialize() {
-    userLabel.setText(clerk.getName());
+    userLabel.setText("Employee");
+    userInitial.setText("E");
     YearMonth month = YearMonth.now();
     currentMonth.setText(month.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
         + ", " + month.getYear());

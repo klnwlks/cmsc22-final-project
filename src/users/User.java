@@ -21,6 +21,10 @@ public abstract class User implements Serializable {
     return name;
   }
 
+  public boolean matchesPassword(String password) {
+    return this.password.equals(password);
+  } // for login purposes
+
   public ArrayList<Transaction> getTransactions() {
     return new ArrayList<>(transactions);
   }

@@ -22,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField; //BAT wala to dito ???
 import users.Transaction;
 import users.User;
+import users.Manager;
 
 
 /**
@@ -37,7 +38,7 @@ public class TransactionLogsController {
   private final Runnable onShowInventory;
 
   @FXML
-  private Label userLabel;
+  private Label userLabel, userInitial;
   @FXML
 
   // added the rest of the labels and buttons for the UI BELOW IS YUNG PILLS SA FIGMA
@@ -78,7 +79,8 @@ public class TransactionLogsController {
   @FXML
   private void initialize() {
     // gets na yan
-    userLabel.setText(currentUser.getName());
+    userLabel.setText(currentUser instanceof Manager ? "Manager" : "Employee");
+    userInitial.setText(userLabel.getText().substring(0, 1));
     dateColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(DATE_FORMAT.format(cell.getValue().getDate()))); //di ko magets yung last code oml masmadali to intindihin
     userColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getUser().getName()));
     productColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getProduct().getName()));

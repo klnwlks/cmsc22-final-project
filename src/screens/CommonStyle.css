@@ -30,6 +30,47 @@
 	-fx-alignment: CENTER_LEFT;
 }
 
+.account-card .logout-button {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+	-fx-padding: 0;
+	-fx-alignment: CENTER_LEFT;
+	-fx-cursor: hand;
+}
+
+.side-bar .account-card {
+	-fx-background-color: #292f41;
+	-fx-background-radius: 25px;
+	-fx-padding: 12px;
+}
+
+.account-card .account-avatar {
+	-fx-background-color: #afc0e8;
+	-fx-background-radius: 50%;
+}
+
+.account-card .account-initial {
+	-fx-text-fill: #141a2d;
+	-fx-font-size: 18px;
+	-fx-font-weight: bold;
+}
+
+.account-card .account-name {
+	-fx-text-fill: #f7e6d0;
+	-fx-font-size: 15px;
+	-fx-font-weight: normal;
+}
+
+.account-card .account-caption {
+	-fx-text-fill: #a9bade;
+	-fx-font-size: 13px;
+	-fx-font-weight: normal;
+}
+
+.account-card .logout-button:hover {
+	-fx-text-fill: white;
+}
+
 .main-screen {
 	-fx-background-color: #FEFAF2;
 	-fx-alignment: CENTER;
