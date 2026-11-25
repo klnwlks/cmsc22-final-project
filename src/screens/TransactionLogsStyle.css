@@ -1,0 +1,243 @@
+/*ADDED SEPERATE SIDE BAR CSS FOR EACH TAB*/
+
+.side-bar {
+    -fx-background-color: #141a2d;
+    -fx-padding: 20px 12px 14px 12px;
+}
+
+.side-bar .separator .line {
+    -fx-border-color: #30384f;
+}
+
+.brand-name {
+    -fx-text-fill: #fffaf3;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 5px 0 5px;
+}
+
+.brand-caption {
+    -fx-text-fill: #a9bade;
+    -fx-font-size: 10px;
+    -fx-padding: -10px 5px 4px 5px;
+}
+
+.side-bar-btn,
+.side-bar-pressed-btn {
+    -fx-font-size: 11px;
+    -fx-padding: 8px 10px;
+    -fx-background-radius: 9px;
+}
+
+.side-bar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #a9bade;
+    -fx-border-color: transparent;
+}
+
+.side-bar-btn:hover {
+    -fx-background-color: #202940;
+}
+
+.side-bar-pressed-btn {
+    -fx-background-color: #343a4b;
+    -fx-text-fill: #fffaf3;
+    -fx-border-color: transparent;
+}
+
+.account-card {
+    -fx-background-color: #292f41;
+    -fx-background-radius: 9px;
+    -fx-padding: 10px;
+}
+
+.account-name {
+    -fx-text-fill: #fffaf3;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.account-caption {
+    -fx-text-fill: #a9bade;
+    -fx-font-size: 10px;
+}
+
+.transactions-screen {
+    -fx-background-color: #fefaf2;
+    -fx-padding: 24px;
+}
+
+.breadcrumb {
+    -fx-text-fill: #687087;
+    -fx-font-size: 10px;
+}
+
+.page-title {
+    -fx-text-fill: #141a2d;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.month-filter {
+    -fx-background-color: #fffdf9;
+    -fx-background-radius: 14px;
+    -fx-border-color: #c9c4bd;
+    -fx-border-radius: 14px;
+    -fx-padding: 2px 6px;
+}
+
+.summary-cards {
+    -fx-padding: 0 0 0 0;
+}
+
+.sales-card,
+.count-card {
+    -fx-padding: 12px;
+    -fx-background-radius: 11px;
+    -fx-border-radius: 11px;
+}
+
+.sales-card {
+    -fx-background-color: #141a2d;
+}
+
+.count-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e8e1d5;
+}
+
+.card-caption,
+.card-footnote {
+    -fx-text-fill: #a9bade;
+    -fx-font-size: 10px;
+}
+
+.card-total {
+    -fx-text-fill: #fffaf3;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.count-caption,
+.count-footnote {
+    -fx-text-fill: #687087;
+    -fx-font-size: 10px;
+}
+
+.count-total {
+    -fx-text-fill: #141a2d;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.filter-row {
+    -fx-padding: 2px 0;
+}
+
+.search-field {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16px;
+    -fx-border-color: #b7b5b2;
+    -fx-border-radius: 16px;
+    -fx-padding: 7px 12px;
+    -fx-prompt-text-fill: #8a8d98;
+}
+
+.filter-hint {
+    -fx-text-fill: #747a8d;
+    -fx-font-size: 10px;
+}
+
+.refresh-button {
+    -fx-padding: 7px 14px;
+}
+
+.table-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-color: #e8e1d5;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-clip: true;
+}
+
+.transactions-table {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px 10px 0 0;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: #f0ece5;
+    -fx-fixed-cell-size: 42px;
+}
+
+.transactions-table .column-header-background {
+    -fx-background-color: #eef1f9;
+}
+
+.transactions-table .column-header,
+.transactions-table .filler {
+    -fx-background-color: #eef1f9;
+    -fx-border-color: transparent transparent #e4e8f1 transparent;
+    -fx-size: 36px;
+}
+
+.transactions-table .column-header .label {
+    -fx-text-fill: #28314d;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.transactions-table .table-cell {
+    -fx-padding: 0 10px;
+    -fx-text-fill: #32384b;
+    -fx-font-size: 10px;
+    -fx-border-color: transparent transparent #f0ece5 transparent;
+}
+
+.transactions-table .table-row-cell {
+    -fx-background-color: #ffffff;
+}
+
+.transactions-table .table-row-cell:odd {
+    -fx-background-color: #fffdfa;
+}
+
+.transactions-table .table-row-cell:selected {
+    -fx-background-color: #e8edf9;
+}
+
+.transactions-table .placeholder .label {
+    -fx-text-fill: #73798b;
+    -fx-font-size: 11px;
+}
+
+.pagination-bar {
+    -fx-padding: 9px 14px;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0 0 10px 10px;
+}
+
+.pagination-summary {
+    -fx-text-fill: #687087;
+    -fx-font-size: 10px;
+}
+
+.page-button {
+    -fx-padding: 6px 12px;
+    -fx-font-size: 10px;
+}
+
+.page-number {
+    -fx-background-color: #3448a5;
+    -fx-background-radius: 18px;
+    -fx-min-width: 28px;
+    -fx-min-height: 28px;
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.empty-message {
+    -fx-text-fill: #687087;
+}

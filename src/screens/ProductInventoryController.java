@@ -2,8 +2,10 @@ package screens;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import inventory.Inventory;
@@ -24,6 +26,7 @@ public class ProductInventoryController {
   private record Entry(Product product, int stock) {
   }
 
+  //WAG NA NATIN TO PAG USPAN BASTA SINEPERATE KO LAHAT KASI ANG GULO SOBRA, TAS NAGCRCRASH SYA PAG DI KO TALGA LIKE INIDENTIFY MUNA
   @FXML
   private TextField searchField;
   @FXML
@@ -39,6 +42,11 @@ public class ProductInventoryController {
   @FXML
   private Label currentInStock, currentSummary, resultSummary;
   @FXML
+  private Button previousPageButton, nextPageButton;
+  @FXML
+  private HBox pageButtons;
+  //GENERAL PILLS NASA ABOVE
+  @FXML
   private TableView<Entry> productTable;
   @FXML
   private TableColumn<Entry, String> productColumn, sizeColumn;
@@ -48,10 +56,14 @@ public class ProductInventoryController {
   private TableColumn<Entry, String> priceColumn, statusColumn;
   @FXML
   private TableColumn<Entry, Void> deleteColumn;
+  //MGA PANG PAAYOS NA VARIABLES ang tass
 
   private final ObservableList<Entry> visibleProducts = FXCollections.observableArrayList();
   private final ToggleGroup categories = new ToggleGroup();
+  private static final int PAGE_SIZE = 10;
   private Category selectedCategory;
+  private List<Entry> matchingProducts = List.of();
+  private int currentPage;
   private final Inventory inventory;
   private final User currentUser;
   private final Runnable onShowTransactions;
@@ -82,10 +94,38 @@ public class ProductInventoryController {
     priceColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper("₱" + cell.getValue().product().getPrice()));
     statusColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(
         cell.getValue().stock() > 0 ? "Available" : "Out of Stock"));
+    categoryColumn.setCellFactory(column -> new TableCell<>() {
+      @Override
+      protected void updateItem(Category category, boolean empty) {
+        super.updateItem(category, empty);
+        if (empty || category == null) {
+          setGraphic(null);
+          return;
+        }
+        Label badge = new Label(categoryLabel(category));
+        badge.getStyleClass().addAll("category-badge", categoryStyleClass(category));
+        setGraphic(badge);
+      }
+    });
+    statusColumn.setCellFactory(column -> new TableCell<>() {
+      @Override
+      protected void updateItem(String status, boolean empty) {
+        super.updateItem(status, empty);
+        if (empty || status == null) {
+          setGraphic(null);
+          return;
+        }
+        Label badge = new Label(status);
+        badge.getStyleClass().addAll("status-badge", status.equals("Available") ? "available" : "out-of-stock");
+        setGraphic(badge);
+      }
+    });
     deleteColumn.setCellFactory(column -> new TableCell<>() {
-      private final Button delete = new Button("Delete");
+      private final Button delete = new Button("×");
       {
         delete.setDisable(!(currentUser instanceof Manager));
+        delete.getStyleClass().add("delete-button");
+        delete.setTooltip(new Tooltip("Delete product"));
         delete.setOnAction(event -> {
           Entry entry = getTableRow().getItem();
           if (entry == null)
@@ -113,12 +153,29 @@ public class ProductInventoryController {
     });
 
     // init categories
+    addAllCategory();
     for (Category category : Category.values())
       addCategory(category);
     categories.getToggles().getFirst().setSelected(true);
-    searchField.textProperty().addListener((observable, oldValue, newValue) -> refresh());
+    searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+      currentPage = 0;
+      refresh();
+    });
     productTable.setItems(visibleProducts);
     refresh();
+  }
+
+  private void addAllCategory() {
+    ToggleButton button = new ToggleButton();
+    button.setUserData(null);
+    button.setToggleGroup(categories);
+    button.setOnAction(event -> {
+      button.setSelected(true);
+      selectedCategory = null;
+      currentPage = 0;
+      refresh();
+    });
+    categoryFilters.getChildren().add(button);
   }
 
   // reusable function to create sortable categories
@@ -129,6 +186,7 @@ public class ProductInventoryController {
     button.setOnAction(event -> {
       button.setSelected(true);
       selectedCategory = category;
+      currentPage = 0;
       refresh();
     });
     categoryFilters.getChildren().add(button);
@@ -158,28 +216,27 @@ public class ProductInventoryController {
           currentInStockCount++;
         }
       }
+      products.sort(Comparator.comparing(entry -> entry.product().getName(), String.CASE_INSENSITIVE_ORDER));
     }
 
-    String query = searchField.getText().strip().toLowerCase();
+    String query = searchField.getText().strip().toLowerCase(Locale.ROOT);
     List<Entry> matches = new ArrayList<>();
     for (Entry entry : products) {
       if (selectedCategory != null && entry.product().getCategory() != selectedCategory) {
         continue;
       }
-      if (!entry.product().getName().toLowerCase().contains(query)) {
+      if (!entry.product().getName().toLowerCase(Locale.ROOT).contains(query)) {
         continue;
       }
       matches.add(entry);
     }
-    visibleProducts.setAll(matches);
+    matchingProducts = matches;
 
     totalProducts.setText(Integer.toString(products.size()));
     categorySummary.setText("Across " + categoryCounts.size() + " categories");
     productsInStock.setText(Integer.toString(inStockCount));
     currentInStock.setText(Integer.toString(currentInStockCount));
-    currentSummary.setText(selectedCategory == null ? "All categories" : selectedCategory.name());
-    resultSummary.setText("Showing " + visibleProducts.size() + " of " + products.size() + " products");
-
+    currentSummary.setText(selectedCategory == null ? "All categories" : categoryLabel(selectedCategory));
     for (Toggle toggle : categories.getToggles()) {
       Category category = (Category) toggle.getUserData();
       String label;
@@ -188,11 +245,72 @@ public class ProductInventoryController {
         label = "All";
         count = products.size();
       } else {
-        label = category.name();
+        label = categoryLabel(category);
         count = categoryCounts.getOrDefault(category, 0);
       }
       ((ToggleButton) toggle).setText(label + " " + count);
     }
+    updatePagination();
+  }
+
+  private void updatePagination() {
+    int pageCount = Math.max(1, (matchingProducts.size() + PAGE_SIZE - 1) / PAGE_SIZE);
+    currentPage = Math.min(currentPage, pageCount - 1);
+    int fromIndex = Math.min(currentPage * PAGE_SIZE, matchingProducts.size());
+    int toIndex = Math.min(fromIndex + PAGE_SIZE, matchingProducts.size());
+    visibleProducts.setAll(matchingProducts.subList(fromIndex, toIndex));
+
+    if (matchingProducts.isEmpty()) {
+      resultSummary.setText("Showing 0 of 0 products");
+    } else {
+      resultSummary.setText(
+          "Showing " + (fromIndex + 1) + "-" + toIndex + " of " + matchingProducts.size() + " products");
+    }
+
+    previousPageButton.setDisable(currentPage == 0);
+    nextPageButton.setDisable(currentPage >= pageCount - 1);
+    pageButtons.getChildren().clear();
+    for (int page = 0; page < pageCount; page++) {
+      int pageIndex = page;
+      Button pageButton = new Button(Integer.toString(page + 1));
+      pageButton.getStyleClass().add("page-number");
+      if (page == currentPage) {
+        pageButton.getStyleClass().add("current-page");
+      }
+      pageButton.setOnAction(event -> {
+        currentPage = pageIndex;
+        updatePagination();
+      });
+      pageButtons.getChildren().add(pageButton);
+    }
+  }
+
+  @FXML
+  private void previousPage() {
+    if (currentPage > 0) {
+      currentPage--;
+      updatePagination();
+    }
+  }
+
+  @FXML
+  private void nextPage() {
+    int pageCount = Math.max(1, (matchingProducts.size() + PAGE_SIZE - 1) / PAGE_SIZE);
+    if (currentPage < pageCount - 1) {
+      currentPage++;
+      updatePagination();
+    }
+  }
+
+  private static String categoryLabel(Category category) {
+    return switch (category) {
+      case ICECREAM -> "Ice cream";
+      default -> category.name().charAt(0) + category.name().substring(1).toLowerCase(Locale.ROOT);
+    };
+  }
+
+  private static String categoryStyleClass(Category category) {
+    return "category-" + category.name().toLowerCase(Locale.ROOT);
   }
 
   // change scene

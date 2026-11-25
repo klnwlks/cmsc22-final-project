@@ -4,49 +4,74 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css, @ProductInventoryStyle.css">
     <left>
         <VBox spacing="12" prefWidth="180" styleClass="side-bar">
-            <Label text="Cowlendar" />
-            <Label text="DTRI Farm Fresh" />
+            <Label text="▣ Cowlendar" styleClass="brand-name" /> <!-- same as transactions tab -->
+            <Label text="DTRI Farm Fresh" styleClass="brand-caption" />
             <Separator />
             <Button fx:id="salesButton" text="Sales" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Button text="Products &amp; Inventory" maxWidth="Infinity" styleClass="side-bar-pressed-btn" />
-            <Button text="Transaction logs" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Button text="Transactions" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Region VBox.vgrow="ALWAYS" />
-            <Label fx:id="userLabel" />
-            <Button text="Log out" disable="true" />
+            <VBox spacing="2" styleClass="account-card">
+                <Label fx:id="userLabel" styleClass="account-name" />
+                <Label text="Log out" styleClass="account-caption" />
+            </VBox>
         </VBox>
     </left>
     <center>
-        <VBox spacing="16" styleClass="main-screen">
-        	<VBox>
-	            <Label text="Cowlendar / Products" />
-	            <HBox spacing="12" alignment="CENTER_LEFT">
-	                <Label text="Product and Inventory Management" />
-	                <Region HBox.hgrow="ALWAYS" />
-	                <Button fx:id="editProductButton" text="Edit product" onAction="#editProduct" />
-	                <Button fx:id="addProductButton" text="Add product" onAction="#addProduct" />
-	            </HBox>
+        <VBox spacing="16" styleClass="inventory-screen">
+            <VBox spacing="5">
+                <Label text="Cowlendar / Products" styleClass="breadcrumb" />
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Product and Inventory Management" styleClass="page-title" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="editProductButton" text="Edit product" onAction="#editProduct" styleClass="secondary-action" />
+                    <Button fx:id="addProductButton" text="+  Add product" onAction="#addProduct" styleClass="primary-action" />
+                </HBox>
             </VBox>
-            <HBox spacing="32" styleClass="main-screen">
-                <VBox spacing="6" styleClass="card-type-1"><Label text="Total products" styleClass="card-type-1-text, bold" /><Label fx:id="totalProducts" text="0"  styleClass="card-type-1-number, bold"/><Label fx:id="categorySummary" text="Across 0 categories" styleClass="card-type-1-text" /></VBox>
-                <VBox spacing="6" styleClass="card-type-2"><Label text="Products in Stock" styleClass="card-type-2-text, bold" /><Label fx:id="productsInStock" text="0" styleClass="card-type-2-number, bold" /><Label text="Available for sale" styleClass="card-type-2-text" /></VBox>
-                <VBox spacing="6" styleClass="card-type-2"><Label text="Current Product in Stock" styleClass="card-type-2-text, bold" /><Label fx:id="currentInStock" text="0" styleClass="card-type-2-number, bold" /><Label fx:id="currentSummary" text="All categories" styleClass="card-type-2-text" /></VBox>
+
+            <HBox alignment="CENTER" spacing="12" styleClass="stats-row">
+                <VBox spacing="7" prefWidth="168" styleClass="total-card">
+                    <Label text="Total products" styleClass="total-caption" />
+                    <Label fx:id="totalProducts" text="0" styleClass="total-number" />
+                    <Label fx:id="categorySummary" text="Across 0 categories" styleClass="total-footnote" />
+                </VBox>
+                <VBox spacing="7" prefWidth="168" styleClass="stock-card">
+                    <Label text="Products in stock" styleClass="stock-caption" />
+                    <Label fx:id="productsInStock" text="0" styleClass="stock-number" />
+                    <Label text="Available for sale" styleClass="stock-footnote" />
+                </VBox>
+                <VBox spacing="7" prefWidth="168" styleClass="stock-card">
+                    <Label text="Current category in stock" styleClass="stock-caption" />
+                    <Label fx:id="currentInStock" text="0" styleClass="stock-number" />
+                    <Label fx:id="currentSummary" text="All categories" styleClass="stock-footnote" />
+                </VBox>
             </HBox>
-            <FlowPane hgap="6" vgap="6" styleClass="main-screen">
-                <TextField fx:id="searchField" promptText="Search products" />
-                <HBox fx:id="categoryFilters" spacing="6" />
-            </FlowPane>
-            <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
-                <columns>
-                    <TableColumn fx:id="productColumn" text="Product" prefWidth="190" />
-                    <TableColumn fx:id="categoryColumn" text="Category" prefWidth="100" />
-                    <TableColumn fx:id="sizeColumn" text="Size / Description" prefWidth="130" />
-                    <TableColumn fx:id="priceColumn" text="Price" prefWidth="80" />
-                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="110" />
-                    <TableColumn fx:id="deleteColumn" text="" prefWidth="80" />
-                </columns>
-                <placeholder><Label text="No products found. Add a product to get started." /></placeholder>
-            </TableView>
-            <Label fx:id="resultSummary" text="Showing 0 products" />
+
+            <HBox spacing="8" alignment="CENTER_LEFT" styleClass="filter-row">
+                <TextField fx:id="searchField" promptText="Search products" prefWidth="150" styleClass="search-field" />
+                <HBox fx:id="categoryFilters" spacing="6" alignment="CENTER_LEFT" styleClass="category-filters" />
+            </HBox>
+
+            <VBox spacing="0" VBox.vgrow="ALWAYS" styleClass="product-table-card">
+                <TableView fx:id="productTable" VBox.vgrow="ALWAYS" styleClass="product-table">
+                    <columns>
+                        <TableColumn fx:id="productColumn" text="Product" prefWidth="190" />
+                        <TableColumn fx:id="categoryColumn" text="Category" prefWidth="110" />
+                        <TableColumn fx:id="sizeColumn" text="Size / Description" prefWidth="140" />
+                        <TableColumn fx:id="priceColumn" text="Price" prefWidth="85" />
+                        <TableColumn fx:id="statusColumn" text="Status" prefWidth="130" />
+                        <TableColumn fx:id="deleteColumn" text="" prefWidth="55" />
+                    </columns>
+                    <placeholder><Label text="No products found. Add a product to get started." styleClass="empty-message" /></placeholder>
+                </TableView>
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="pagination-bar">
+                    <Label fx:id="resultSummary" text="Showing 0 products" styleClass="pagination-summary" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="previousPageButton" text="Previous" onAction="#previousPage" styleClass="page-button" />
+                    <HBox fx:id="pageButtons" spacing="5" alignment="CENTER" />
+                    <Button fx:id="nextPageButton" text="Next" onAction="#nextPage" styleClass="page-button" />
+                </HBox>
+            </VBox>
         </VBox>
     </center>
 </BorderPane>
