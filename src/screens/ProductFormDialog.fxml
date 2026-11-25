@@ -3,7 +3,7 @@
 <?import javafx.geometry.Orientation?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
-<DialogPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css, @ProductFormDialogStyle.css" prefWidth="340" prefHeight="509.05">
+<DialogPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css, @ProductFormDialogStyle.css" prefWidth="340">
     <buttonTypes>
         <ButtonType fx:constant="OK" />
         <ButtonType fx:constant="CANCEL" />
@@ -29,6 +29,11 @@
             <VBox spacing="2" GridPane.rowIndex="5">
             	<Label text="Stock quantity" GridPane.rowIndex="12" styleClass="category"/>
             	<TextField fx:id="stock" text="0" styleClass="input-field"/>
+            </VBox>
+            <VBox spacing="2" GridPane.rowIndex="6">
+                <Label text="Product image (optional)" styleClass="category"/>
+                <TextField fx:id="imagePath" editable="false" promptText="No image selected" styleClass="input-field"/>
+                <Button text="Choose image..." onAction="#chooseImage"/>
             </VBox>
             <Label fx:id="error" GridPane.rowIndex="14" GridPane.columnSpan="2" styleClass="category"/>
         </GridPane>

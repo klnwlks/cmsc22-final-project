@@ -350,7 +350,7 @@ public class ProductInventoryController {
         } else if (currentUser instanceof Manager manager) {
           Product edited = entry.product();
           manager.editProduct(existing.product().getName(), edited.getName(),
-              edited.getDescription(), edited.getPrice(), existing.product().getImageString(),
+              edited.getDescription(), edited.getPrice(), edited.getImageString(),
               edited.getCategory());
         } else {
           throw new SecurityException("only managers can manage products");

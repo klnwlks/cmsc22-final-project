@@ -1,5 +1,6 @@
 package screens;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.collections.FXCollections;
@@ -11,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 import product.Category;
@@ -32,6 +34,8 @@ public class ProductFormDialog extends Dialog<ProductFormDialog.Result> {
   @FXML
   private ComboBox<Category> category;
   @FXML
+  private TextField imagePath;
+  @FXML
   private Label error;
 
   // gets na yan
@@ -52,6 +56,7 @@ public class ProductFormDialog extends Dialog<ProductFormDialog.Result> {
       name.setText(existing.getName());
       description.setText(existing.getDescription());
       price.setText(Integer.toString(existing.getPrice()));
+      imagePath.setText(existing.getImageString());
       stock.setEditable(false);
     }
     name.prefWidthProperty().bind(getDialogPane().widthProperty().multiply(0.9));
@@ -77,7 +82,21 @@ public class ProductFormDialog extends Dialog<ProductFormDialog.Result> {
     // return data to the table, remove whitespacea nd etc
     setResultConverter(button -> button == ButtonType.OK
         ? new Result(new Product(name.getText().strip(), description.getText().strip(),
-            Integer.parseInt(price.getText()), category.getValue()), Integer.parseInt(stock.getText()))
+            Integer.parseInt(price.getText()), imagePath.getText().isBlank() ? null : imagePath.getText(),
+            category.getValue()), Integer.parseInt(stock.getText()))
         : null);
+  }
+
+  // use the filechooserto get image path
+  @FXML
+  private void chooseImage() {
+    FileChooser chooser = new FileChooser();
+    chooser.setTitle("Choose product image");
+    chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+        "Images", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"));
+    File selected = chooser.showOpenDialog(getDialogPane().getScene().getWindow());
+    if (selected != null) {
+      imagePath.setText(selected.getAbsolutePath());
+    }
   }
 }
