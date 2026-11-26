@@ -170,7 +170,7 @@ public class SalesController {
           image.setFitWidth(100);
           image.setFitHeight(68);
           image.setPreserveRatio(true);
-          // Load the product image from its file path.
+          // ay basta image urls ung image natin
           String source = product.getImageString();
           if (source != null && !source.isBlank()) {
             try {
@@ -180,7 +180,7 @@ public class SalesController {
             }
           }
           image.getStyleClass().add("product-image");
-          // Build a card that can be added to the cart only when sales are allowed.
+          // reusable cards to show products na pwede ibenta
           // aalam mo dapat component to pero watevs
           Label name = new Label(product.getName());
           name.getStyleClass().add("product-name");

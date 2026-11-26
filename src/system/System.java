@@ -50,7 +50,7 @@ public class System implements Serializable {
     return newUser;
   }
 
-    //login
+  // login
   public User authenticate(String username, String password) {
     if (username == null || password == null) {
       return null;
@@ -62,7 +62,7 @@ public class System implements Serializable {
         .orElse(null);
   }
 
-  // Save directly to the binary file; failures propagate to the caller.
+  // save as bin
   public void save(Path path) throws IOException {
     Path target = Objects.requireNonNull(path, "path").toAbsolutePath();
     Path parent = target.getParent();
