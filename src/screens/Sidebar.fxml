@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="screens.NavigationSidebarController"
+      spacing="12" prefWidth="180" styleClass="side-bar">
+    <Label text="▣ Cowlendar" styleClass="brand-name" />
+    <Label text="DTRI Farm Fresh" styleClass="brand-caption" />
+    <Separator />
+    <Button fx:id="salesButton" maxWidth="Infinity" styleClass="side-bar-btn" />
+    <Button fx:id="inventoryButton" text="Products &amp; Inventory" maxWidth="Infinity" styleClass="side-bar-btn" />
+    <Button fx:id="transactionButton" text="Transactions" maxWidth="Infinity" styleClass="side-bar-btn" />
+    <Region VBox.vgrow="ALWAYS" />
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="account-card">
+        <StackPane minWidth="44" prefWidth="44" maxWidth="44" minHeight="44" prefHeight="44" maxHeight="44"
+                   styleClass="account-avatar">
+            <Label fx:id="userInitial" styleClass="account-initial" />
+        </StackPane>
+        <VBox spacing="2">
+            <Label fx:id="userLabel" styleClass="account-name" />
+            <Button fx:id="logoutButton" text="Log out" styleClass="account-caption logout-button" />
+        </VBox>
+    </HBox>
+</VBox>

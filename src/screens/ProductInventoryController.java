@@ -28,16 +28,14 @@ public class ProductInventoryController {
 
   // WAG NA NATIN TO PAG USPAN BASTA SINEPERATE KO LAHAT KASI ANG GULO SOBRA, TAS
   // NAGCRCRASH SYA PAG DI KO TALGA LIKE INIDENTIFY MUNA
+
+  //ignore taas na comment di ko na sineperate para "reusable code", basta lahat to masmaayos pag ganto
   @FXML
   private TextField searchField;
   @FXML
   private Button addProductButton;
   @FXML
   private Button editProductButton, restockButton;
-  @FXML
-  private Label userLabel;
-  @FXML
-  private Label userInitial;
   @FXML
   private HBox categoryFilters;
   @FXML
@@ -69,18 +67,14 @@ public class ProductInventoryController {
   private int currentPage;
   private final Inventory inventory;
   private final User currentUser;
-  private final Runnable onShowTransactions;
 
-  public ProductInventoryController(system.System system, User currentUser, Runnable onShowTransactions) {
+  public ProductInventoryController(system.System system, User currentUser) {
     this.inventory = system.getInventory();
     this.currentUser = currentUser;
-    this.onShowTransactions = onShowTransactions;
   }
 
   @FXML
   private void initialize() {
-    userLabel.setText(currentUser instanceof Manager ? "Manager" : "Employee");
-    userInitial.setText(userLabel.getText().substring(0, 1));
     // disable if not manager
     addProductButton.setDisable(!(currentUser instanceof Manager));
 
@@ -317,12 +311,6 @@ public class ProductInventoryController {
 
   private static String categoryStyleClass(Category category) {
     return "category-" + category.name().toLowerCase(Locale.ROOT);
-  }
-
-  // change scene
-  @FXML
-  private void showTransactions() {
-    onShowTransactions.run();
   }
 
   // open dialog
