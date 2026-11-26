@@ -51,25 +51,29 @@ public class SalesController {
   @FXML
   private TableColumn<Line, Void> removeColumn;
   @FXML
-  private Label userLabel, userInitial, totalLabel, message, currentMonth;
+  private Label totalLabel, message, currentMonth, title;
+  @FXML
+  private VBox salePanel;
 
   private final Clerk clerk;
-  private final Runnable onInventory, onTransactions;
+  private final boolean readOnly;
   private final Map<Product, Integer> quantities = new LinkedHashMap<>();
   private final ObservableList<Line> cartItems = FXCollections.observableArrayList();
   private final ToggleGroup categories = new ToggleGroup();
   private Category selectedCategory;
 
-  public SalesController(Clerk clerk, Runnable onInventory, Runnable onTransactions) {
+  public SalesController(Clerk clerk, boolean readOnly) {
     this.clerk = clerk;
-    this.onInventory = onInventory;
-    this.onTransactions = onTransactions;
+    this.readOnly = readOnly;
   }
 
   @FXML
   private void initialize() {
-    userLabel.setText("Employee");
-    userInitial.setText("E");
+    if (readOnly) {
+      title.setText("Clerk dashboard: " + clerk.getName());
+      salePanel.setVisible(false);
+      salePanel.setManaged(false);
+    }
     YearMonth month = YearMonth.now();
     currentMonth.setText(month.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
         + ", " + month.getYear());
@@ -139,11 +143,11 @@ public class SalesController {
   }
 
   public void refresh() {
+    // rebuild the cards and category counts from the current inventory.
     products.getChildren().clear();
     Map<Product, Integer> inventory = clerk.getInventory();
     Map<Category, Integer> categoryCounts = new java.util.EnumMap<>(Category.class);
-    inventory.keySet().forEach(product ->
-        categoryCounts.merge(product.getCategory(), 1, Integer::sum));
+    inventory.keySet().forEach(product -> categoryCounts.merge(product.getCategory(), 1, Integer::sum));
     for (Toggle toggle : categories.getToggles()) {
       Category category = (Category) toggle.getUserData();
       String label = category == null ? "All" : categoryLabel(category);
@@ -151,6 +155,7 @@ public class SalesController {
       ((ToggleButton) toggle).setText(label + "  " + count);
     }
 
+    // apply the selected category and case-insensitive search before sorting.
     String query = searchField.getText().strip().toLowerCase(Locale.ROOT);
     inventory.entrySet().stream()
         .filter(entry -> selectedCategory == null || entry.getKey().getCategory() == selectedCategory)
@@ -165,17 +170,18 @@ public class SalesController {
           image.setFitWidth(100);
           image.setFitHeight(68);
           image.setPreserveRatio(true);
+          // Load the product image from its file path.
           String source = product.getImageString();
           if (source != null && !source.isBlank()) {
             try {
-              String url = source.matches("^[a-zA-Z][a-zA-Z0-9+.-]*:.*") ? source : new File(source).toURI().toString();
-              Image loaded = new Image(url, true);
-              image.setImage(loaded);
+              image.setImage(new Image(new File(source).toURI().toString(), true));
             } catch (IllegalArgumentException ignored) {
               image.setImage(null);
             }
           }
           image.getStyleClass().add("product-image");
+          // Build a card that can be added to the cart only when sales are allowed.
+          // aalam mo dapat component to pero watevs
           Label name = new Label(product.getName());
           name.getStyleClass().add("product-name");
           name.setWrapText(true);
@@ -191,7 +197,7 @@ public class SalesController {
           content.getStyleClass().add("product-card-content");
           Button card = new Button();
           card.setGraphic(content);
-          card.setDisable(entry.getValue() <= 0);
+          card.setDisable(readOnly || entry.getValue() <= 0);
           card.getStyleClass().add("product-card");
           card.setOnAction(event -> add(product));
           products.getChildren().add(card);
@@ -251,6 +257,8 @@ public class SalesController {
 
   @FXML
   private void completeSale() {
+    if (readOnly)
+      return;
     if (quantities.isEmpty()) {
       message.setText("Add at least one product to complete the sale.");
       return;
@@ -282,15 +290,5 @@ public class SalesController {
       case ICECREAM -> "Ice cream";
       default -> category.name().charAt(0) + category.name().substring(1).toLowerCase(Locale.ROOT);
     };
-  }
-
-  @FXML
-  private void showInventory() {
-    onInventory.run();
-  }
-
-  @FXML
-  private void showTransactions() {
-    onTransactions.run();
   }
 }
