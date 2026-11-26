@@ -42,7 +42,22 @@ public class Inventory implements Serializable {
 
   // tldr ilagay ung stuff, default 20 stocks tayo
   private void starter(String name, String description, int price, Category category) {
-    inventory.put(new Product(name, description, price, category), 20);
+    // also defualt iamges
+    String image = switch (name) {
+      case "Fresh Milk (1 L)" -> "Fresh-milk-1L.jpg";
+      case "Fresh Milk (500 mL)" -> "Fresh-milk-500ml.jpg";
+      case "Choco Milk (1 L)" -> "Choco-milk-1L.jpg";
+      case "Choco Milk (500 mL)" -> "Choco-milk-500ml.jpg";
+      case "Coffee Milk (1 L)" -> "Coffee-milk-1L.jpg";
+      case "Coffee Milk (500 mL)" -> "Coffee-milk-500ml.jpg";
+      case "Yogurt Plain (1 L)" -> "Yogurt-1L.jpg";
+      case "Yogurt Plain (500 mL)" -> "Yogurt-500ml.jpg";
+      case "Kesong Puti (200 g)" -> "Kesong-Puti.jpg";
+      case "Mozzarella (1 kg)" -> "Mozzarella.jpg";
+      case "Pastillas de Leche (Plain, 18 pcs)" -> "Pastillas-Plain.jpg";
+      default -> null;
+    };
+    inventory.put(new Product(name, description, price, image == null ? null : "src/images/" + image, category), 20);
   }
 
   public Product addProduct(Product product, int quantity, User user) {
