@@ -6,7 +6,6 @@ import product.Category;
 import system.System;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Manager extends User {
   private final Inventory inventory;

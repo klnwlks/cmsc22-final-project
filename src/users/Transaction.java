@@ -4,7 +4,6 @@ import product.Product;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 // serializable is required for persistence
 public class Transaction implements Serializable {
@@ -14,6 +13,15 @@ public class Transaction implements Serializable {
   private final int amount;
   private final int quantity;
   private final LocalDateTime date;
+  private boolean voided;
+
+  public boolean isVoided() {
+    return voided;
+  }
+
+  public void markVoided() {
+    voided = true;
+  }
 
   public Transaction(User user, Product product, int amount, int quantity) {
     this.user = user;
