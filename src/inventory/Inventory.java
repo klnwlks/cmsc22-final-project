@@ -1,7 +1,7 @@
 package inventory;
 
+import product.Category;
 import product.Product;
-import users.Clerk;
 import users.Manager;
 import users.Transaction;
 import users.User;
@@ -9,12 +9,41 @@ import users.User;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Inventory implements Serializable {
 
   // use a hashmap so we can have product reference and their stock as integer
   private final HashMap<Product, Integer> inventory = new HashMap<>();
+
+  // ung starter products ng tri
+  public Inventory() {
+    starter("Fresh Milk (1 L)", "1 L of fresh, locally produced carabao milk", 140, Category.MILK);
+    starter("Fresh Milk (500 mL)", "500 mL of fresh, locally produced carabao milk", 75, Category.MILK);
+    starter("Choco Milk (1 L)", "1 L of rich, sweet chocolate milk", 165, Category.MILK);
+    starter("Choco Milk (500 mL)", "500 mL of rich, sweet chocolate milk", 85, Category.MILK);
+    starter("Coffee Milk (1 L)", "1 L of mellow coffee milk", 175, Category.MILK);
+    starter("Coffee Milk (500 mL)", "500 mL of mellow coffee milk", 90, Category.MILK);
+    starter("Pandan Milk (1 L)", "1 L of creamy, refreshing pandan milk", 165, Category.MILK);
+    starter("Pandan Milk (500 mL)", "500 mL of creamy, refreshing pandan milk", 85, Category.MILK);
+    starter("Melon Milk (1 L)", "1 L of sweet melon milk", 165, Category.MILK);
+    starter("Melon Milk (500 mL)", "500 mL of sweet melon milk", 85, Category.MILK);
+    starter("Yogurt Plain (1 L)", "1 L of refreshing plain yogurt", 160, Category.YOGURT);
+    starter("Yogurt Plain (500 mL)", "500 mL of refreshing plain yogurt", 80, Category.YOGURT);
+    starter("Yogurt Strawberry (1 L)", "1 L of refreshing strawberry yogurt", 250, Category.YOGURT);
+    starter("Yogurt Strawberry (500 mL)", "500 mL of refreshing strawberry yogurt", 125, Category.YOGURT);
+    starter("Kesong Puti (200 g)", "200 g of mild, fresh kesong puti", 90, Category.CHEESE);
+    starter("Butter", "A rich, smooth stick of butter", 160, Category.BUTTER);
+    starter("Cheddar (200 g)", "200 g of smooth, flavorful cheddar cheese", 200, Category.CHEESE);
+    starter("Mozzarella (1 kg)", "1 kg of savory, stretchy mozzarella cheese", 800, Category.CHEESE);
+    starter("Pastillas de Leche (Plain, 18 pcs)", "A pack of soft, milky pastillas de leche", 130, Category.SWEETS);
+    starter("Ice Cream (8 oz)", "8 oz of rich, creamy ice cream", 65, Category.ICECREAM);
+    starter("Ice Cream (12 oz)", "12 oz of rich, creamy ice cream", 90, Category.ICECREAM);
+  }
+
+  // tldr ilagay ung stuff, default 20 stocks tayo
+  private void starter(String name, String description, int price, Category category) {
+    inventory.put(new Product(name, description, price, category), 20);
+  }
 
   public Product addProduct(Product product, int quantity, User user) {
     // call to check if manager
@@ -77,7 +106,6 @@ public class Inventory implements Serializable {
   }
 
   public Transaction transaction(Product product, int quantity, User user) {
-    User transactionUser = user;
     if (quantity <= 0) {
       throw new IllegalArgumentException("quantity must be positive");
     }
@@ -93,6 +121,19 @@ public class Inventory implements Serializable {
     inventory.put(product, stock - quantity);
     user.addTransaction(transaction);
     return transaction;
+  }
+
+  public void voidTransaction(Transaction sale, User user) {
+    if (sale == null || sale.isVoided() || !sale.getUser().getTransactions().contains(sale)) {
+      throw new IllegalArgumentException("Select a recorded sale that has not been voided.");
+    }
+    // return sold product stock once voided
+    Product product = sale.getProduct();
+    Integer stock = inventory.get(product);
+    if (stock != null) {
+      inventory.put(product, Math.addExact(stock, sale.getQuantity()));
+    }
+    sale.markVoided();
   }
 
   // check if user is a manager
