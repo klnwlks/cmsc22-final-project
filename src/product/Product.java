@@ -1,7 +1,6 @@
 package product;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Product implements Serializable {
   private String name;
