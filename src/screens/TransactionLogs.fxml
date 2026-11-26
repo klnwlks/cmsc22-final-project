@@ -33,7 +33,6 @@
                 <TextField fx:id="searchField" promptText="Search transactions" prefWidth="190" styleClass="search-field" />
                 <Label text="Filter by month using the date selector" styleClass="filter-hint" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Button text="Refresh" onAction="#refresh" styleClass="refresh-button" />
                 <Button fx:id="voidButton" text="Void sale" onAction="#voidSale" />
             </HBox>
 
