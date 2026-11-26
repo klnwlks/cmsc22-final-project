@@ -14,7 +14,9 @@ import java.util.TreeSet;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -22,11 +24,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField; //BAT wala to dito ???
 import users.Transaction;
 import users.User;
-import users.Manager;
 
 
 /**
- * Read-only view of System.getTransactions(), aggregating every user's history.
+ * Shows sales history and lets clerks and managers void recorded sales.
  */
 public class TransactionLogsController {
   private static final int PAGE_SIZE = 8;
@@ -35,10 +36,6 @@ public class TransactionLogsController {
 
   private final system.System system;
   private final User currentUser;
-  private final Runnable onShowInventory;
-
-  @FXML
-  private Label userLabel, userInitial;
   @FXML
 
   // added the rest of the labels and buttons for the UI BELOW IS YUNG PILLS SA FIGMA
@@ -51,7 +48,7 @@ public class TransactionLogsController {
   
   //I just seperated everything nalang kasi it kept crashing when i used multiple ones on the same one
   @FXML
-  private Button previousPageButton, nextPageButton;
+  private Button previousPageButton, nextPageButton, voidButton;
   @FXML
   private TableView<Transaction> transactionTable;
   @FXML
@@ -70,17 +67,13 @@ public class TransactionLogsController {
   private int currentPage;
   private boolean updatingMonthOptions;
 
-  public TransactionLogsController(system.System system, User currentUser, Runnable onShowInventory) {
+  public TransactionLogsController(system.System system, User currentUser) {
     this.system = system;
     this.currentUser = currentUser;
-    this.onShowInventory = onShowInventory;
   }
 
   @FXML
   private void initialize() {
-    // gets na yan
-    userLabel.setText(currentUser instanceof Manager ? "Manager" : "Employee");
-    userInitial.setText(userLabel.getText().substring(0, 1));
     dateColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(DATE_FORMAT.format(cell.getValue().getDate()))); //di ko magets yung last code oml masmadali to intindihin
     userColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getUser().getName()));
     productColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getProduct().getName()));
@@ -90,8 +83,13 @@ public class TransactionLogsController {
     });
 
     // changed the amount column to show ₱ sign and comma formatting sa PILL
-    amountColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(money(cell.getValue().getAmount())));
+    amountColumn.setCellValueFactory(cell -> {
+      Transaction sale = cell.getValue();
+      return new ReadOnlyStringWrapper(money(sale.getAmount()) + (sale.isVoided() ? " (voided)" : ""));
+    });
     transactionTable.setItems(FXCollections.observableArrayList());
+    voidButton.disableProperty().bind(transactionTable.getSelectionModel().selectedItemProperty()
+        .map(Transaction::isVoided).orElse(true));
 
     // added the rest of the labels and buttons for the UI BELOW IS YUNG PILLS SA FIGMA
     refresh();
@@ -116,6 +114,27 @@ public class TransactionLogsController {
     updateMonthOptions();
     updateSummaryCards();
     updateVisibleTransactions();
+  }
+
+  @FXML
+  private void voidSale() {
+    Transaction sale = transactionTable.getSelectionModel().getSelectedItem();
+    if (sale == null || sale.isVoided()) {
+      return;
+    }
+    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
+        "Void this sale and return its quantity to stock if the product is still listed?",
+        ButtonType.OK, ButtonType.CANCEL);
+    confirmation.initOwner(voidButton.getScene().getWindow());
+    if (confirmation.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+      try {
+        system.getInventory().voidTransaction(sale, currentUser);
+        transactionTable.getSelectionModel().clearSelection();
+        refresh();
+      } catch (IllegalArgumentException | ArithmeticException | SecurityException exception) {
+        new Alert(Alert.AlertType.ERROR, "Could not void sale: " + exception.getMessage()).showAndWait();
+      }
+    }
   }
 
   private void updateMonthOptions() {
@@ -143,7 +162,8 @@ public class TransactionLogsController {
   }
 
   private void updateSummaryCards() {
-    List<Transaction> periodTransactions = transactionsForSelectedMonth();
+    List<Transaction> periodTransactions = transactionsForSelectedMonth().stream()
+        .filter(sale -> !sale.isVoided()).toList();
     long sales = periodTransactions.stream().mapToLong(Transaction::getAmount).sum();
     String period = monthFilter.getValue() == null || ALL_MONTHS.equals(monthFilter.getValue())
         ? "Across all months"
@@ -228,10 +248,5 @@ public class TransactionLogsController {
 
   private static String money(long amount) {
     return String.format(Locale.ROOT, "₱%,d.00", amount);
-  }
-
-  @FXML
-  private void showInventory() {
-    onShowInventory.run();
   }
 }
