@@ -17,7 +17,7 @@
     <ComboBox fx:id="roleField" promptText="Choose a role" maxWidth="280"/>
     <Label fx:id="errorLabel" wrapText="true" maxWidth="280" style="-fx-text-fill: #b00020;"/>
     <Button fx:id="submitButton" text="Create account" onAction="#handleSubmit"
-            maxWidth="280" defaultButton="true"/>
+            maxWidth="280" defaultButton="true" style="-fx-cursor: hand;"/>
     <Button fx:id="switchModeButton" text="Already have an account? Log in"
-            onAction="#switchMode" maxWidth="280"/>
+            onAction="#switchMode" maxWidth="280" style="-fx-cursor: hand;"/>
 </VBox>

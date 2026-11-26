@@ -190,10 +190,6 @@
     -fx-font-weight: bold;
 }
 
-.table-cell {
-    -fx-alignment: CENTER_LEFT;
-}
-
 .product-table-card {
     -fx-background-color: #ffffff;
     -fx-background-radius: 10px;

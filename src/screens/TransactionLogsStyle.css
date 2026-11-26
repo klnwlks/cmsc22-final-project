@@ -164,10 +164,6 @@
     -fx-clip: true;
 }
 
-.table-cell {
-    -fx-alignment: CENTER;
-}
-
 .transactions-table {
     -fx-background-color: transparent;
     -fx-background-radius: 10px 10px 0 0;
