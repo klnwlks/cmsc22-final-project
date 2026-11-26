@@ -2,7 +2,6 @@ package users;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
 
 // abstract since only clerk and manager could be users
 public abstract class User implements Serializable {

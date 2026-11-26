@@ -4,7 +4,6 @@ import inventory.Inventory;
 import product.Product;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class Clerk extends User {
 
