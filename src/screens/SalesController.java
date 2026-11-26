@@ -27,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import product.Category;
 import product.Product;
@@ -180,6 +181,10 @@ public class SalesController {
             }
           }
           image.getStyleClass().add("product-image");
+          StackPane imageFrame = new StackPane(image);
+          imageFrame.setMinSize(100, 68);
+          imageFrame.setPrefSize(100, 68);
+          imageFrame.setMaxSize(100, 68);
           // reusable cards to show products na pwede ibenta
           // aalam mo dapat component to pero watevs
           Label name = new Label(product.getName());
@@ -192,7 +197,10 @@ public class SalesController {
           price.getStyleClass().add("product-price");
           Label stock = new Label(entry.getValue() > 0 ? entry.getValue() + " in stock" : "Out of stock");
           stock.getStyleClass().add(entry.getValue() > 0 ? "product-stock" : "product-stock-empty");
-          VBox content = new VBox(4, image, name, description, price, stock);
+          VBox content = new VBox(4, imageFrame, name, description, price, stock);
+          content.setMinWidth(100);
+          content.setPrefWidth(100);
+          content.setMaxWidth(100);
           content.setAlignment(Pos.CENTER);
           content.getStyleClass().add("product-card-content");
           Button card = new Button();

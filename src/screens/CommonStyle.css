@@ -14,18 +14,50 @@
 
 .side-bar {
 	-fx-background-color: #141A2D;
+	-fx-padding: 20px 12px 14px 12px;
+}
+
+.side-bar .separator .line {
+	-fx-border-color: #30384f;
+}
+
+.brand-name {
+	-fx-text-fill: #fffaf3;
+	-fx-font-size: 15px;
+	-fx-font-weight: bold;
+	-fx-padding: 4px 5px 0 5px;
+}
+
+.brand-caption {
+	-fx-text-fill: #a9bade;
+	-fx-font-size: 10px;
+	-fx-padding: -10px 5px 4px 5px;
+}
+
+.side-bar-btn,
+.side-bar-pressed-btn {
+	-fx-font-size: 11px;
+	-fx-padding: 8px 10px;
+	-fx-background-radius: 9px;
 }
 
 .side-bar-btn {
-	-fx-background-color: #141A2D;
-	-fx-text-fill: #A9BADE;
+	-fx-background-color: transparent;
+	-fx-text-fill: #a9bade;
+	-fx-border-color: transparent;
 	-fx-border-width: 0px;
 	-fx-alignment: CENTER_LEFT;
+	-fx-cursor: hand;
+}
+
+.side-bar-btn:hover {
+	-fx-background-color: #202940;
 }
 
 .side-bar-pressed-btn {
-	-fx-background-color: #7C7879;
-	-fx-text-fill: #F7E6D0;
+	-fx-background-color: #343a4b;
+	-fx-text-fill: #fffaf3;
+	-fx-border-color: transparent;
 	-fx-border-width: 0px;
 	-fx-alignment: CENTER_LEFT;
 }
@@ -40,8 +72,8 @@
 
 .side-bar .account-card {
 	-fx-background-color: #292f41;
-	-fx-background-radius: 25px;
-	-fx-padding: 12px;
+	-fx-background-radius: 9px;
+	-fx-padding: 10px;
 }
 
 .account-card .account-avatar {
@@ -56,15 +88,14 @@
 }
 
 .account-card .account-name {
-	-fx-text-fill: #f7e6d0;
-	-fx-font-size: 15px;
-	-fx-font-weight: normal;
+	-fx-text-fill: #fffaf3;
+	-fx-font-size: 11px;
+	-fx-font-weight: bold;
 }
 
 .account-card .account-caption {
 	-fx-text-fill: #a9bade;
-	-fx-font-size: 13px;
-	-fx-font-weight: normal;
+	-fx-font-size: 10px;
 }
 
 .account-card .logout-button:hover {

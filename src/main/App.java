@@ -11,10 +11,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.layout.BorderPane;
 import screens.LoginController;
+import screens.NavigationSidebarController;
 import screens.SalesController;
 import users.Clerk;
 import screens.ProductInventoryController;
@@ -27,13 +27,14 @@ public class App extends Application {
   // default path of save file, on close it saves
   private static final Path DATA_FILE = Path.of("data", "cowlendar.dat");
   private System system;
+  private User signedInUser;
   private ProductInventoryController inventoryController;
   private TransactionLogsController transactionController;
   private LoginController loginController;
   private Scene loginScene;
   private Scene dashboardScene;
   private BorderPane inventoryPage, transactionPage, salesPage;
-  private Button inventoryButton, transactionButton, salesButton, activeButton;
+  private NavigationSidebarController inventorySidebar, transactionSidebar, salesSidebar;
   private SalesController salesController;
 
   @Override
@@ -82,41 +83,45 @@ public class App extends Application {
   }
 
   private void showUserScreens(Stage stage, User currentUser) throws IOException {
-    inventoryController = new ProductInventoryController(system, currentUser, () -> showTransactions(stage));
-    // made sidebar reusable here instead of redeclaring per fxml screen
+    signedInUser = currentUser;
+    inventoryController = new ProductInventoryController(system, currentUser);
     transactionController = new TransactionLogsController(system, currentUser);
 
     FXMLLoader inventoryLoader = new FXMLLoader(App.class.getResource("/screens/ProductInventory.fxml"));
     inventoryLoader.setController(inventoryController);
     inventoryPage = inventoryLoader.load();
-    var navigation = inventoryLoader.getNamespace();
-    inventoryButton = (Button) navigation.get("inventoryButton");
-    transactionButton = (Button) navigation.get("transactionButton");
-    salesButton = (Button) navigation.get("salesButton");
-    ((Button) navigation.get("logoutButton")).setOnAction(event -> logout(stage));
-    inventoryButton.setOnAction(event -> showInventory(stage));
+    inventorySidebar = (NavigationSidebarController) inventoryLoader.getNamespace().get("sidebarController");
+    configureSidebar(inventorySidebar, currentUser, stage);
 
     FXMLLoader transactionLoader = new FXMLLoader(App.class.getResource("/screens/TransactionLogs.fxml"));
     transactionLoader.setController(transactionController);
     transactionPage = transactionLoader.load();
+    transactionSidebar = (NavigationSidebarController) transactionLoader.getNamespace().get("sidebarController");
+    configureSidebar(transactionSidebar, currentUser, stage);
 
     // tapos pag maanger is readonly dapat ung dashboard ng clerk nila
     if (currentUser instanceof Clerk clerk) {
-      loadSales(clerk, false);
-      salesButton.setOnAction(event -> showSales(stage));
+      loadSales(clerk, false, stage);
       showSales(stage);
       return;
     }
-    salesButton.setText("Clerk dashboards");
-    salesButton.setOnAction(event -> openClerkDashboard(stage));
     showInventory(stage);
   }
 
-  private void loadSales(Clerk clerk, boolean readOnly) throws IOException {
+  private void configureSidebar(NavigationSidebarController sidebar, User currentUser, Stage stage) {
+    String salesButtonText = currentUser instanceof Clerk ? "Sales" : "Clerk dashboards";
+    Runnable salesAction = currentUser instanceof Clerk ? () -> showSales(stage) : () -> openClerkDashboard(stage);
+    sidebar.configure(currentUser, salesButtonText, salesAction, () -> showInventory(stage),
+        () -> showTransactions(stage), () -> logout(stage));
+  }
+
+  private void loadSales(Clerk clerk, boolean readOnly, Stage stage) throws IOException {
     var loader = new FXMLLoader(App.class.getResource("/screens/Sales.fxml"));
     salesController = new SalesController(clerk, readOnly);
     loader.setController(salesController);
     salesPage = loader.load();
+    salesSidebar = (NavigationSidebarController) loader.getNamespace().get("sidebarController");
+    configureSidebar(salesSidebar, signedInUser, stage); // replaced for the reusable sidebar
   }
 
   private void openClerkDashboard(Stage stage) {
@@ -135,7 +140,7 @@ public class App extends Application {
       try {
         Clerk clerk = system.getUsers().stream().filter(Clerk.class::isInstance).map(Clerk.class::cast)
             .filter(user -> user.getName().equals(name)).findFirst().orElseThrow();
-        loadSales(clerk, true);
+        loadSales(clerk, true, stage);
         showSales(stage);
       } catch (IOException exception) {
         new Alert(Alert.AlertType.ERROR, "Could not open clerk dashboard: " + exception.getMessage()).showAndWait();
@@ -159,35 +164,26 @@ public class App extends Application {
 
   private void showSales(Stage stage) {
     salesController.refresh();
-    showPage(stage, salesPage, salesButton);
+    showPage(stage, salesPage, salesSidebar, NavigationSidebarController.Page.SALES);
   }
 
   private void showInventory(Stage stage) {
     inventoryController.refresh();
-    showPage(stage, inventoryPage, inventoryButton);
+    showPage(stage, inventoryPage, inventorySidebar, NavigationSidebarController.Page.INVENTORY);
   }
 
   private void showTransactions(Stage stage) {
     transactionController.refresh();
-    showPage(stage, transactionPage, transactionButton);
+    showPage(stage, transactionPage, transactionSidebar, NavigationSidebarController.Page.TRANSACTIONS);
   }
 
-  // reusable sidebar,
-  private void showPage(Stage stage, BorderPane page, Button current) {
-    if (activeButton != null)
-      activeButton.getStyleClass().setAll("button", "side-bar-btn");
-    current.getStyleClass().setAll("button", "side-bar-pressed-btn");
-    activeButton = current;
-    BorderPane previous = dashboardScene == null ? inventoryPage : (BorderPane) dashboardScene.getRoot();
-    if (previous != page) {
-      var sidebar = previous.getLeft();
-      previous.setLeft(null);
-      page.setLeft(sidebar);
-    }
+  private void showPage(Stage stage, BorderPane page, NavigationSidebarController sidebar,
+      NavigationSidebarController.Page activePage) {
+    sidebar.setActivePage(activePage);
     if (dashboardScene == null) {
       dashboardScene = new Scene(page);
       stage.setScene(dashboardScene);
-    } else if (previous != page) {
+    } else if (dashboardScene.getRoot() != page) {
       dashboardScene.setRoot(page);
     }
   }

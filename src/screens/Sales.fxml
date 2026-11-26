@@ -3,6 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="@CommonStyle.css, @SalesStyle.css">
+    <left>
+        <fx:include fx:id="sidebar" source="Sidebar.fxml" />
+    </left>
     <center>
         <VBox spacing="14" styleClass="sales-screen">
             <VBox spacing="5">
