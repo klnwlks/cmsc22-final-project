@@ -26,13 +26,14 @@ public class ProductInventoryController {
   private record Entry(Product product, int stock) {
   }
 
-  //WAG NA NATIN TO PAG USPAN BASTA SINEPERATE KO LAHAT KASI ANG GULO SOBRA, TAS NAGCRCRASH SYA PAG DI KO TALGA LIKE INIDENTIFY MUNA
+  // WAG NA NATIN TO PAG USPAN BASTA SINEPERATE KO LAHAT KASI ANG GULO SOBRA, TAS
+  // NAGCRCRASH SYA PAG DI KO TALGA LIKE INIDENTIFY MUNA
   @FXML
   private TextField searchField;
   @FXML
   private Button addProductButton;
   @FXML
-  private Button editProductButton;
+  private Button editProductButton, restockButton;
   @FXML
   private Label userLabel;
   @FXML
@@ -47,7 +48,7 @@ public class ProductInventoryController {
   private Button previousPageButton, nextPageButton;
   @FXML
   private HBox pageButtons;
-  //GENERAL PILLS NASA ABOVE
+  // GENERAL PILLS NASA ABOVE
   @FXML
   private TableView<Entry> productTable;
   @FXML
@@ -58,7 +59,7 @@ public class ProductInventoryController {
   private TableColumn<Entry, String> priceColumn, statusColumn;
   @FXML
   private TableColumn<Entry, Void> deleteColumn;
-  //MGA PANG PAAYOS NA VARIABLES ang tass
+  // MGA PANG PAAYOS NA VARIABLES ang tass
 
   private final ObservableList<Entry> visibleProducts = FXCollections.observableArrayList();
   private final ToggleGroup categories = new ToggleGroup();
@@ -90,13 +91,15 @@ public class ProductInventoryController {
     } else {
       editProductButton.setDisable(true);
     }
-    
+    // haha if edit disabled disable din restock
+    restockButton.disableProperty().bind(editProductButton.disableProperty());
+
     productColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().product().getName()));
     categoryColumn.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().product().getCategory()));
     sizeColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().product().getDescription()));
     priceColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper("₱" + cell.getValue().product().getPrice()));
     statusColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(
-        cell.getValue().stock() > 0 ? "Available" : "Out of Stock"));
+        cell.getValue().stock() > 0 ? cell.getValue().stock() + " in stock" : "Out of Stock"));
     categoryColumn.setCellFactory(column -> new TableCell<>() {
       @Override
       protected void updateItem(Category category, boolean empty) {
@@ -119,7 +122,7 @@ public class ProductInventoryController {
           return;
         }
         Label badge = new Label(status);
-        badge.getStyleClass().addAll("status-badge", status.equals("Available") ? "available" : "out-of-stock");
+        badge.getStyleClass().addAll("status-badge", status.equals("Out of Stock") ? "out-of-stock" : "available");
         setGraphic(badge);
       }
     });
@@ -334,6 +337,26 @@ public class ProductInventoryController {
     if (selected != null && currentUser instanceof Manager) {
       showProductDialog(selected);
     }
+  }
+
+  @FXML
+  private void restock() {
+    Entry selected = productTable.getSelectionModel().getSelectedItem();
+    if (selected == null || !(currentUser instanceof Manager manager))
+      return;
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.initOwner(productTable.getScene().getWindow());
+    dialog.setTitle("Restock product");
+    dialog.setHeaderText(selected.product().getName() + " · " + selected.stock() + " in stock");
+    dialog.setContentText("Quantity to add:");
+    dialog.showAndWait().ifPresent(value -> {
+      try {
+        manager.addStock(selected.product(), Integer.parseInt(value.strip()));
+        refresh();
+      } catch (IllegalArgumentException | ArithmeticException exception) {
+        showError("Enter a positive whole quantity that fits in stock.");
+      }
+    });
   }
 
   // add and edit modals

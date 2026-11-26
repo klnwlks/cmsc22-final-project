@@ -8,8 +8,8 @@
             <Label text="DTRI Farm Fresh" styleClass="brand-caption" />
             <Separator />
             <Button fx:id="salesButton" text="Sales" maxWidth="Infinity" styleClass="side-bar-btn" />
-            <Button text="Products &amp; Inventory" maxWidth="Infinity" styleClass="side-bar-pressed-btn" />
-            <Button text="Transactions" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
+            <Button fx:id="inventoryButton" text="Products &amp; Inventory" maxWidth="Infinity" styleClass="side-bar-pressed-btn" />
+            <Button fx:id="transactionButton" text="Transactions" onAction="#showTransactions" maxWidth="Infinity" styleClass="side-bar-btn" />
             <Region VBox.vgrow="ALWAYS" />
             <HBox spacing="10" alignment="CENTER_LEFT" styleClass="account-card">
                 <StackPane minWidth="44" prefWidth="44" maxWidth="44" minHeight="44" prefHeight="44" maxHeight="44"
@@ -31,6 +31,7 @@
                     <Label text="Product and Inventory Management" styleClass="page-title" />
                     <Region HBox.hgrow="ALWAYS" />
                     <Button fx:id="editProductButton" text="Edit product" onAction="#editProduct" styleClass="secondary-action" />
+                    <Button fx:id="restockButton" text="Restock" onAction="#restock" styleClass="secondary-action" />
                     <Button fx:id="addProductButton" text="+  Add product" onAction="#addProduct" styleClass="primary-action" />
                 </HBox>
             </VBox>
