@@ -56,7 +56,9 @@ public class ProductFormDialog extends Dialog<ProductFormDialog.Result> {
       name.setText(existing.getName());
       description.setText(existing.getDescription());
       price.setText(Integer.toString(existing.getPrice()));
-      imagePath.setText(existing.getImageString());
+      if (existing.getImageString() != null) {
+        imagePath.setText(existing.getImageString());
+      }
       stock.setEditable(false);
     }
     name.prefWidthProperty().bind(getDialogPane().widthProperty().multiply(0.9));
